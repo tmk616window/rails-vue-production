@@ -1,0 +1,7 @@
+<h1>Home#index</h1>
+<% @tasks.each do |task| %>
+    <%= task.name %>
+    <% end %>    
+
+<%= javascript_pack_tag 'hello_vue' %>
+<%= stylesheet_pack_tag 'hello_vue' %>    
