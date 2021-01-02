@@ -10,7 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_01_092320) do
+ActiveRecord::Schema.define(version: 2021_01_02_182512) do
+
+  create_table "protags", charset: "utf8", force: :cascade do |t|
+    t.string "tag"
+    t.bigint "task_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["task_id"], name: "index_protags_on_task_id"
+  end
+
+  create_table "ptags", charset: "utf8", force: :cascade do |t|
+    t.string "tag"
+    t.bigint "task_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["task_id"], name: "index_ptags_on_task_id"
+  end
 
   create_table "tasks", charset: "utf8", force: :cascade do |t|
     t.string "name"
@@ -30,5 +46,7 @@ ActiveRecord::Schema.define(version: 2021_01_01_092320) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  add_foreign_key "protags", "tasks"
+  add_foreign_key "ptags", "tasks"
   add_foreign_key "tasks", "users"
 end

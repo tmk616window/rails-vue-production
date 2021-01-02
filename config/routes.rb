@@ -7,7 +7,7 @@ Rails.application.routes.draw do
     resources :tasks, only: [:index, :create, :update, :show, :destroy]
     resources :users, only: [:index, :create, :update, :show, :destroy]
     resources :sessions, only: [:new, :create, :destroy,:show, :index]
-    resources :protags, only: [:index,:create, :update, :destroy,:show]
+    resources :ptags, only: [:index,:create, :update, :destroy,:show]
     resources :login, only: [:index,:create, :update, :destroy,:show]
  end
 
