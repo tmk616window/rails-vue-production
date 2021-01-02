@@ -21,17 +21,24 @@
           dense
         >
           <v-list-item-group>
+
+            <router-link to="/" class="link">
             <v-list-item>
               <v-list-item-title >ホーム</v-list-item-title>
             </v-list-item>
+            </router-link>
             
+            <router-link to="/login" class="link">
             <v-list-item>
               <v-list-item-title >ログイン</v-list-item-title>
             </v-list-item>
+            </router-link>
 
+            <router-link to="/login" class="link">
             <v-list-item>
-              <v-list-item-title >ログアウト</v-list-item-title>
+              <v-list-item-title >ログイン</v-list-item-title>
             </v-list-item>
+            </router-link>
 
           </v-list-item-group>
         </v-list>
