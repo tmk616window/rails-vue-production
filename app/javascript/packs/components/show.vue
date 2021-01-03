@@ -2,8 +2,6 @@
   <v-app>
       <br><br><br><br>
       <br><br>
-      <div>
-      </div>
 
 
 <div class="show_box">
@@ -75,30 +73,13 @@
 </div>
 <div class="user_box">
     <div class="user_image">
-        aaaa
+    </div>
+
+    <div class="user_name">
+        <p>name</p>
     </div>
 </div>              
 </div>
-        <div class="message">
-            <p>メッセージ</p>
-            <div class="message_box">
-                <p class="messsage_name">username</p>
-                <p class="message_string">こんにちは</p>
-            </div>
-        </div>
-    <p>{{task.name}}</p>
-    　<router-link to="/">戻る</router-link>
-  <p><v-btn dark v-on:click="show" class="button">編集</v-btn></p>
-  <modal name="hello-world" :draggable="true" :resizable="true">
-    <div class="modal-header">
-      <h2>編集</h2>
-    </div>
-    <div class="modal-body">
-    <b-form-input v-model="putTask" type="text" class="putinput" size="20"></b-form-input>
-    <v-btn @click='updateTask(task.id)'>更新</v-btn>
-      <button v-on:click="hide">閉じる</button>
-    </div>  
-  </modal>
   </v-app>
 </template>
 <script>
@@ -283,6 +264,7 @@
     margin-left: 50px;
     border: solid 1px black;
     float: left;
+    padding: 10px 10px 10px 10px;
 }
 .message{
     margin-left: 320px;
@@ -299,5 +281,17 @@
 
 .add-button-ptag{
     background-color:yellow;
+}
+
+.user_image{
+    border: solid black 1px;
+    height: 200px;
+    width: 200px;
+    border-radius: 100px;
+}
+
+.user_name{
+    margin-top: 30px;
+    font-size: 20px; 
 }
 </style>

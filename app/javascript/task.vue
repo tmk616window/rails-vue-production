@@ -5,6 +5,9 @@
     <div>
         <v-text-field v-model="newTask" type="text" name="" class="postinput"/>
         <v-btn @click='createTask'>作成</v-btn>
+        <p>{{userLogin}}</p>
+        <p>{{storeuserId}}</p>
+        <p>{{userId}}</p>
     </div>
     <div class="collection">
         <v-container>
@@ -69,7 +72,8 @@
              name: ''
          },
          newTask: '',
-         putTask: ''
+         putTask: '',
+         userId: this.storeuserId
        }
      },
      mounted () {
@@ -86,8 +90,8 @@
              });
          },
          createTask(){
-             axios.post('/api/tasks', {task: {name: this.newTask}}).then(response => {
-                axios.post('/api/protags', {task: {name: this.newTask}}) 
+             axios.post('/api/tasks', {task: {name: this.newTask, user_id: this.userId}}).then(response => {
+                axios.post('/api/ptags', {task: {name: this.newTask}}) 
                 this.newTask = '';
                 var element = document.documentElement;
                 var bottom = element.scrollHeight - element.clientHeight;
@@ -115,7 +119,10 @@
     },
   computed:{
     userLogin(){
-      // return this.$store.getters.login
+      return this.$store.getters.login
+    },
+    storeuserId(){
+      return this.$store.getters.login.id
     }
   }
     

@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   get '/login', to: 'home#index'
   get '/:id', to: 'home#index'
   get '/signup', to: 'home#index'
-
+  get '/profile/:id', to: 'home#index'
 
   namespace :api, format: 'json' do
     resources :tasks, only: [:index, :create, :update, :show, :destroy]

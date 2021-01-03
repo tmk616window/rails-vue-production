@@ -5,7 +5,8 @@ import Task from '../../task.vue'
 import Show from '../components/show.vue'
 import Signup from '../components/signup.vue'
 import Login from '../components/login.vue'
-// import store from '../store/store.js'
+import Profile from '../components/profile.vue'
+
 
 Vue.use(VueRouter)
 
@@ -18,16 +19,15 @@ const router = new VueRouter({
     {
       path: '/:taskId',
       name: 'task',
-      // template: '',
       component: Show
+    },
+    {
+      path: '/profile/:userId',
+      name: 'user_profile',
+      component: Profile
     }
+
   ],
 })
-
-// router.beforeEach((to, from, next) => {
-  
-//     // console.log(store.state.user)
-// })
-
  
 export default router;
