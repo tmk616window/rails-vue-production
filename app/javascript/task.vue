@@ -2,7 +2,6 @@
     <v-app>
     <a href="/login">aaaa</a>
     <label for="">新規作成</label>
-    <p>{{userLogin}}</p>
     <div>
         <v-text-field v-model="newTask" type="text" name="" class="postinput"/>
         <v-btn @click='createTask'>作成</v-btn>
@@ -58,9 +57,9 @@
         'X-CSRF-TOKEN' : document.querySelector('meta[name="csrf-token"]').getAttribute('content')
     };
    export default {
-      components: {
-        Chart,
-      },
+     components: {
+        Chart
+     },
      data() {
        return {
          task: [],
@@ -116,7 +115,7 @@
     },
   computed:{
     userLogin(){
-      return this.$store.getters.login
+      // return this.$store.getters.login
     }
   }
     
