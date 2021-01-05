@@ -8,11 +8,11 @@ import Rails from "@rails/ujs"
 import Turbolinks from "turbolinks"
 import * as ActiveStorage from "@rails/activestorage"
 import "channels"
-import TurbolinksAdapter from 'vue-turbolinks';
+// import TurbolinksAdapter from 'vue-turbolinks';
 import Vue from 'vue';
 
 
-Vue.use(TurbolinksAdapter);
+// Vue.use(TurbolinksAdapter);
 Rails.start()
-Turbolinks.start()
+// Turbolinks.start()
 ActiveStorage.start()

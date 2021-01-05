@@ -5,10 +5,8 @@
     <div>
         <v-text-field v-model="newTask" type="text" name="" class="postinput"/>
         <v-btn @click='createTask'>作成</v-btn>
-        <p>{{userLogin}}</p>
-        <p>{{storeuserId}}</p>
-        <p>{{userId}}</p>
     </div>
+
     <div class="collection">
         <v-container>
             <v-row classr="dark" style="height: 450px;">
@@ -37,12 +35,13 @@
                  </div>
              </div>
              <div class="user_box">
-                 <p class="user_image"></p>
-                 <p class="username">username</p>
+                 <p class="user_image">{{user_task(task.user_id).icon}}</p>
+                 <p class="username">{{user_task(task.user_id).name}}</p>
              </div>
             </div>
             </router-link>
         </v-card>
+        <!-- </div> -->
         </div>
         </v-row>
         </v-container>  
@@ -65,6 +64,7 @@
      },
      data() {
        return {
+         user: [],  
          task: [],
          tasks: [],
          task: {
@@ -82,6 +82,8 @@
      },
      created(){
          this.fetchTasks();
+         this.fetchUser();
+        //  this.user_task();
      },
      methods: {
          fetchTasks() {
@@ -89,8 +91,13 @@
                 this.tasks = response.data.tasks
              });
          },
+         fetchUser() {
+            axios.get('/api/users/').then(response => {
+                this.user = response.data.users
+             })
+         },
          createTask(){
-             axios.post('/api/tasks', {task: {name: this.newTask, user_id: this.userId}}).then(response => {
+             axios.post('/api/tasks', {task: {name: this.newTask, user_id: this.userLogin.id}}).then(response => {
                 axios.post('/api/ptags', {task: {name: this.newTask}}) 
                 this.newTask = '';
                 var element = document.documentElement;
@@ -116,6 +123,10 @@
                 });
             });
         },
+        user_task(id) {
+            const u =this.user.filter(u => u.id === id )[0]
+            return u;
+        }
     },
   computed:{
     userLogin(){
@@ -123,7 +134,7 @@
     },
     storeuserId(){
       return this.$store.getters.login.id
-    }
+    },
   }
     
    }

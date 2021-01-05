@@ -30,4 +30,13 @@ const router = new VueRouter({
   ],
 })
  
+// export default {
+//   data: function () {
+//     return {
+//       message: "Hello Vue!"
+//     }
+//   }
+// }
+
+
 export default router;
