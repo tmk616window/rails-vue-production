@@ -6,7 +6,6 @@
         <v-text-field v-model="newTask" type="text" name="" class="postinput"/>
         <v-btn @click='createTask'>作成</v-btn>
     </div>
-
     <div class="collection">
         <v-container>
             <v-row classr="dark" style="height: 450px;">
@@ -17,13 +16,10 @@
               <div id="chart">
                 <chart></chart>
               </div>
-             <div class="box2">
-                <p class="string">php</p> 
-                <p class="string">php</p> 
-                <p class="string">php</p> 
-                <p class="string">phｚｚｚｚｚｚｚ</p>
-                <p class="string">dl;cml;mcd</p>
+             <div class="box2"  >
+                <p class="string" v-for="tp in task_ptag(task.id)">{{tp.tag}}</p> 
              </div>
+
              <div>
                  <div class="like_box">
                     <p class="like_image"></p>
@@ -35,13 +31,12 @@
                  </div>
              </div>
              <div class="user_box">
-                 <p class="user_image">{{user_task(task.user_id).icon}}</p>
+                 <p class="user_image"></p>
                  <p class="username">{{user_task(task.user_id).name}}</p>
              </div>
             </div>
             </router-link>
         </v-card>
-        <!-- </div> -->
         </div>
         </v-row>
         </v-container>  
@@ -64,6 +59,7 @@
      },
      data() {
        return {
+         ptag: [],  
          user: [],  
          task: [],
          tasks: [],
@@ -83,7 +79,7 @@
      created(){
          this.fetchTasks();
          this.fetchUser();
-        //  this.user_task();
+         this.fetchPtag();
      },
      methods: {
          fetchTasks() {
@@ -94,6 +90,11 @@
          fetchUser() {
             axios.get('/api/users/').then(response => {
                 this.user = response.data.users
+             })
+         },
+         fetchPtag() {
+            axios.get('/api/ptags/').then(response => {
+                this.ptag = response.data.ptags
              })
          },
          createTask(){
@@ -126,15 +127,16 @@
         user_task(id) {
             const u =this.user.filter(u => u.id === id )[0]
             return u;
+        },
+        task_ptag(id) {
+            const p =this.ptag.filter(p => p.task_id === id )
+            return p;
         }
     },
   computed:{
     userLogin(){
       return this.$store.getters.login
-    },
-    storeuserId(){
-      return this.$store.getters.login.id
-    },
+    }
   }
     
    }
@@ -176,6 +178,7 @@
     text-decoration:none;
     margin: 0;
     margin-bottom: 4px;
+    margin-right: 5px;
 }
 .string:hover {
     text-decoration:none;

@@ -5,7 +5,6 @@ class Api::PtagsController < ApplicationController
   
   def show
     @ptag = Ptag.where(task_id: params[:id])
-  #     @protag = Protag.find_by(task_id: @task.id)
   end
 
   def create

@@ -36,6 +36,7 @@
                         this.loginEmail = '',
                         this.loginPassword = '',
                         this.$store.dispatch('isLoggedIn')
+                        this.$router.push('/')
                     // this.$stroe.commit('getUser', res.data)
                 })
             }

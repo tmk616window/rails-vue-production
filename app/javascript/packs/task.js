@@ -27,6 +27,11 @@ var app = new Vue({
   el: '#app',
   components: {
       'nnn': Header,
+  },
+  computed:{
+    userLogin(){
+      return this.$store.getters.login
+    }
   }
 });
 

@@ -13,6 +13,7 @@
                          ・開発言語
                             <v-btn dark fab color="red" class="add-button-icon" @click="addInput">＋</v-btn>
                             <button type="button" @click="onSubmit" class="add-button-ptag">送信</button>
+
                          </p>
                      <div class="lang">
                         <p v-for="ptag in ptags" class="string">
@@ -35,6 +36,8 @@
                         <p class="string">javascript</p>
                         <p class="string">javascript</p>
                         <p class="string">javascript</p>
+                        <p class="string"></p>
+                        <p class="string"></p>
                      </div>
                         <p class="article">・URL</p>
                      <div class="lang">
@@ -67,16 +70,12 @@
             </p>
         </div>
     </div>
-    <div class="like">
-        <p>aa</p>
-    </div>
 </div>
 <div class="user_box">
     <div class="user_image">
     </div>
-
     <div class="user_name">
-        <p>name</p>
+        <router-link :to="{name: 'user_profile', params: {userId: task_user(task.user_id).id}}" class="link">{{task_user(task.user_id).name}}</router-link>
     </div>
 </div>              
 </div>
@@ -91,15 +90,12 @@
       },
      data() {
        return {
+         task: [],
          id: this.$route.params.taskId,
+         user: [],
          ptag: [],
          ptags: [],
          texts:[],
-         task: [],
-         task: {
-             id: '',
-             name: ''
-         },
          putTask: '',
          putPtag: ''
        }
@@ -107,6 +103,14 @@
     created(){
         this.fetchTasks(this.id);
         this.fetchPtags(this.id);
+        // this.fetchUsers();
+    },
+    mounted(){
+        this.axios.get('/api/users/').then(response => {
+                this.user = response.data.users
+        });
+        // this.fetchTasks(this.id);
+        // this.fetchUsers();
     },
     methods: {
         fetchTasks(id) {
@@ -169,15 +173,24 @@
                 });
              });
         },
+        task_user(i) {
+            const u = this.user.filter(u => u.id === i )[0]
+            return u;
+        },
         show() {
             this.$modal.show('hello-world');
         },
         hide() {
             this.$modal.hide('hello-world');
-        },
-        
-    }
-   }
+        },    
+    },
+    computed:{
+        userLogin(){
+        return this.$store.getters.login
+        }
+    }      
+
+}
 </script>
 
 <style scoped>
