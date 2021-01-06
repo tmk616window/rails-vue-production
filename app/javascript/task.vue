@@ -5,6 +5,70 @@
     <div>
         <v-text-field v-model="newTask" type="text" name="" class="postinput"/>
         <v-btn @click='createTask'>作成</v-btn>
+
+        <select v-model="new_backend_point">
+            <option disabled value="">0</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+        </select>
+
+        <select v-model="new_plan_point">
+            <option disabled value="">0</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+        </select>
+
+        <select v-model="new_unique_point">
+            <option disabled value="">0</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+        </select>
+
+        <select v-model="new_user_point">
+            <option disabled value="">0</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+        </select>
+
+        <select v-model="new_front_point">
+            <option disabled value="">0</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+        </select>
+
+        <select v-model="new_infra_point">
+            <option disabled value="">0</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+        </select>
+
+
+
+         
+         
+         
+         
+         
+
+
     </div>
     <div class="collection">
         <v-container>
@@ -32,7 +96,7 @@
              </div>
              <div class="user_box">
                  <p class="user_image"></p>
-                 <p class="username">{{user_task(task.user_id).name}}</p>
+                 <p class="username">{{user_task(task.user_id)["name"][0]}}</p>
              </div>
             </div>
             </router-link>
@@ -68,6 +132,12 @@
              name: ''
          },
          newTask: '',
+         new_backend_point: '',
+         new_infra_point: '',
+         new_front_point: '',
+         new_user_point: '',
+         new_unique_point: '',
+         new_plan_point: '',
          putTask: '',
          userId: this.storeuserId
        }
@@ -98,8 +168,7 @@
              })
          },
          createTask(){
-             axios.post('/api/tasks', {task: {name: this.newTask, user_id: this.userLogin.id}}).then(response => {
-                axios.post('/api/ptags', {task: {name: this.newTask}}) 
+             axios.post('/api/tasks', {task: {name: this.newTask, user_id: this.userLogin.id,backend_point: this.new_backend_point,front_point: this.new_front_point,plan_point: this.new_plan_point,infra_point: this.new_infra_point,unique_point: this.new_unique_point,user_point: this.new_user_point}}).then(response => {
                 this.newTask = '';
                 var element = document.documentElement;
                 var bottom = element.scrollHeight - element.clientHeight;

@@ -39,10 +39,10 @@ class Api::TasksController < ApplicationController
     
     
     def task_params
-       params.require(:task).permit(:name, :user_id)
+       params.require(:task).permit(:name, :user_id,:backend_point,:front_point,:plan_point,:infra_point,:unique_point,:user_point)
     end
     
     
-    
+
     
   end
