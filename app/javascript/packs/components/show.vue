@@ -24,7 +24,6 @@
                          ・開発言語
                             <v-btn dark fab color="red" class="add-button-icon" @click="addInput">＋</v-btn>
                             <button type="button" @click="onSubmit" class="add-button-ptag">送信</button>
-
                          </p>
                      <div class="lang">
                         <p v-for="ptag in ptags" class="string">
@@ -33,7 +32,6 @@
                         </p>
                         <p v-for="(text,index) in texts" class="string">
                             <input type="text" v-model="texts[index]" size=10>
-                            <!--<button type="button" @click="removeInput(index)">削除</button>-->
                             <v-btn dark fab color="red" class="add-button-icon" @click="removeInput(index)">－</v-btn>
                         </p>
                      </div>    
@@ -64,24 +62,21 @@
                         新卒
                      </div>
         </div>
-        <p class="comment_string">コメント</p>
-        <div class="comment">
-            <p>mklxsmklcnsmklncksldncklasncm/las,nmdklanmdklankl
-            ndkl;md;aｍｍｍｍｍｍｍｍｍｍｍｍｍｍｍｍｍ,xlsmal;mddklwmdklew
-            mdlk;sml;dml;dm;lwmdlpmewk;pdmwpjdopwjopdjaspdw
-            kdpwmdkl;ewmdlpewmldpmwl;dmw;lmdewpojmdpowe
+        <button type="button" @click="TConSubmit" class="add-button-ptag">送信</button>
+        <v-btn dark fab color="red" class="add-button-icon" @click="addInputTc">＋</v-btn>
+        <div v-for="tc in taskcomments">
+            <p class="comment_string">
+                {{tc.title}}
             </p>
+            <div class="comment">{{tc.comment}}</div>                        
         </div>
-        <p class="comment_string">ポートフォリオ概要</p>
-        <div class="comment">
-            <p>mklxsmklcnsmklncksldncklasncm/las,nmdklanmdklankl
-            </p>
-        </div>
-
-        <p class="comment_string">ポートフォリオ概要</p>
-        <div class="comment">
-            <p>mklxsmklcnsmklncksldncklasncm/las,nmdklanmdklankl
-            </p>
+        <div v-for="(tc, index) in TCs">
+                <p class="comment_string">
+                    <input type="text" v-model="tc.tct" size=10>
+                </p>
+                <div class="comment">
+                    <input type="text" v-model="tc.tcc" size=10>
+                </div>
         </div>
     </div>
 </div>
@@ -89,7 +84,7 @@
     <div class="user_image">
     </div>
     <div class="user_name">
-                <router-link :to="{name: 'user_profile', params: {userId: task_user(task.user_id).id}}" class="link">{{task_user(task.user_id).name}}</router-link>
+        <router-link :to="{name: 'user_profile', params: {userId: task_user(task.user_id).id}}" class="link">{{task_user(task.user_id).name}}</router-link>
     </div>
 </div>              
 </div>
@@ -110,6 +105,9 @@
          ptag: [],
          ptags: [],
          itags: [],
+         taskcomments: [],
+         TCs: [
+         ],
          itexts: [],
          texts:[],
          putTask: '',
@@ -120,6 +118,7 @@
         this.fetchTasks(this.id);
         this.fetchPtags(this.id);
         this.fetchItags(this.id);
+        this.fetchTaskcomments(this.id);        
         // this.fetchUsers();
     },
     mounted(){
@@ -145,6 +144,11 @@
                 this.itags = response.data.itags
                 });
         },
+        fetchTaskcomments(id){
+                axios.get('/api/taskcomments/' + id).then(response => {
+                this.taskcomments = response.data.taskcomments
+                });
+        },
          updateTask(id) {
              axios.put('/api/tasks/' + id , {task: {name: this.putTask}}).then(response => {
                 this.putTask = '';
@@ -157,9 +161,6 @@
          removeInput(index) {
              this.texts.splice(index, 1)
          },
-        addInput() {
-            this.texts.push('')
-        },
          updatePtag(id) {
              axios.put('/api/ptags/' + id, {ptags: {tag: this.putPtag}}).then(response => {
                 this.putPtag = '';
@@ -183,6 +184,9 @@
         },
         addInputitag() {
             this.itexts.push(''); 
+        }, 
+        addInputTc() {
+            this.TCs.push({tct:'', tcc: ''}); 
         },
         onSubmit() {
             for(let i = 0; i < this.texts.length; i++) {
@@ -202,6 +206,16 @@
                 });
                  this.itexts.splice(0)
              })
+           }
+        },
+        TConSubmit() {
+            for(let i = 0; i < this.TCs.length; i++) {
+             axios.post('/api/taskcomments', {taskcomment: {title: this.TCs[i].tct,comment: this.TCs[i].tcc,task_id: this.id}}).then(res => {
+                axios.get('/api/taskcomments/' + this.id).then(response => {
+                    this.taskcomments = response.data.taskcomments
+                });
+                 this.TCs.splice(0)
+             }) 
            }
         },
         deletePtag(id){
