@@ -18,13 +18,6 @@
               />
         </div>
         <div>
-            {{task.infra_point}}
-            {{task.backend_point}}
-            {{task.user_point}}
-            {{task.unique_point}}
-            {{task.plan_point}}
-            {{task.front_point}}
-
         </div>
         <div class="box">
                      <p class="article">
@@ -44,18 +37,21 @@
                             <v-btn dark fab color="red" class="add-button-icon" @click="removeInput(index)">－</v-btn>
                         </p>
                      </div>    
-                        <p class="article">・インフラ</p>
+                        <p class="article">
+                            ・インフラ
+                            <v-btn dark fab color="red" class="add-button-icon" @click="addInputitag">＋</v-btn>
+                            <button type="button" @click="ionSubmit" class="add-button-ptag">送信</button>
+                        </p>
                      <div class="lang">
-                        <p class="string">vue.js</p> 
-                        <p class="string">php</p> 
-                        <p class="string">php</p> 
-                        <p class="string">javascript</p>
-                        <p class="string">javascript</p>
-                        <p class="string">javascript</p>
-                        <p class="string">javascript</p>
-                        <p class="string">javascript</p>
-                        <p class="string"></p>
-                        <p class="string"></p>
+                        <p v-for="itag in itags" class="string">
+                            {{itag.tag}}
+                            <v-icon @click="deleteItag(itag.id)">mdi-delete</v-icon>
+                        </p>
+                        <p v-for="(itext,index) in itexts" class="string">
+                            <input type="text" v-model="itexts[index]" size=10>
+                            <!--<button type="button" @click="removeInput(index)">削除</button>-->
+                            <v-btn dark fab color="red" class="add-button-icon" @click="iremoveInput(index)">－</v-btn>
+                        </p>
                      </div>
                         <p class="article">・URL</p>
                      <div class="lang">
@@ -113,6 +109,8 @@
          user: [],
          ptag: [],
          ptags: [],
+         itags: [],
+         itexts: [],
          texts:[],
          putTask: '',
          putPtag: ''
@@ -121,6 +119,7 @@
     created(){
         this.fetchTasks(this.id);
         this.fetchPtags(this.id);
+        this.fetchItags(this.id);
         // this.fetchUsers();
     },
     mounted(){
@@ -139,6 +138,11 @@
         fetchPtags(id){
                 axios.get('/api/ptags/' + id).then(response => {
                 this.ptags = response.data.ptags
+                });
+        },
+        fetchItags(id){
+                axios.get('/api/itags/' + id).then(response => {
+                this.itags = response.data.itags
                 });
         },
          updateTask(id) {
@@ -171,8 +175,14 @@
         removeInput(index) {
             this.texts.splice(index, 1);
         },
+        iremoveInput(index) {
+            this.itexts.splice(index, 1);
+        },
         addInput() {
             this.texts.push(''); 
+        },
+        addInputitag() {
+            this.itexts.push(''); 
         },
         onSubmit() {
             for(let i = 0; i < this.texts.length; i++) {
@@ -184,10 +194,27 @@
              })
            }
         },
+        ionSubmit() {
+            for(let i = 0; i < this.itexts.length; i++) {
+             axios.post('/api/itags', {itag: {tag: this.itexts[i],task_id: this.id}}).then(res => {
+                axios.get('/api/itags/' + this.id).then(response => {
+                this.itags = response.data.itags
+                });
+                 this.itexts.splice(0)
+             })
+           }
+        },
         deletePtag(id){
              axios.delete('/api/ptags/' + id ).then(response => {
                 axios.get('/api/ptags/' + this.id).then(response => {
                 this.ptags = response.data.ptags
+                });
+             });
+        },
+        deleteItag(id){
+             axios.delete('/api/itags/' + id ).then(response => {
+                axios.get('/api/itags/' + this.id).then(response => {
+                this.itags = response.data.itags
                 });
              });
         },
