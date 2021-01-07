@@ -12,6 +12,8 @@ Rails.application.routes.draw do
     resources :users, only: [:index, :create, :update, :show, :destroy]
     resources :sessions, only: [:new, :create, :destroy,:show, :index]
     resources :ptags, only: [:index,:create, :update, :destroy,:show]
+    resources :itags, only: [:index,:create, :update, :destroy,:show]
+    resources :taskcomments, only: [:index,:create, :update, :destroy,:show]
     resources :login, only: [:index,:create, :update, :destroy,:show]
  end
 

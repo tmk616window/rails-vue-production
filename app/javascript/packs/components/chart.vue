@@ -12,7 +12,6 @@ export default {
           {
             label: 'ポートフォリオ',
             data: [this.infra_point,this.front_point, this.backend_point, this.plan_point, this.user_point, this.unique_point],
-            // data: [0,1, 2, 3, 4, 0],
             backgroundColor: [
               'rgba(255, 99, 132, 0.2)',
             ],

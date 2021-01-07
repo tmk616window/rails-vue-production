@@ -69,7 +69,6 @@
             <router-link :to="{name: 'task', params: {taskId: task.id}}" v-bind:for="'task_' + task.id" class="link">
             <div id="box">
               <div id="chart">
-                <!-- <chart></chart> -->
               <Chart 
               :infra_point="task.infra_point" 
               :backend_point="task.backend_point" 
