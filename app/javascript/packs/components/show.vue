@@ -7,7 +7,25 @@
 <div class="show_box">
     <div class="card">
     <div>
-        <chart class="chart"></chart>
+        <div class="chart">
+              <Chart 
+              :infra_point="task.infra_point" 
+              :backend_point="task.backend_point" 
+              :user_point="task.user_point" 
+              :plan_point="task.plan_point" 
+              :unique_point="task.unique_point"
+              :front_point="task.plan_point"
+              />
+        </div>
+        <div>
+            {{task.infra_point}}
+            {{task.backend_point}}
+            {{task.user_point}}
+            {{task.unique_point}}
+            {{task.plan_point}}
+            {{task.front_point}}
+
+        </div>
         <div class="box">
                      <p class="article">
                          ・開発言語
@@ -75,7 +93,7 @@
     <div class="user_image">
     </div>
     <div class="user_name">
-        <router-link :to="{name: 'user_profile', params: {userId: task_user(task.user_id).id}}" class="link">{{task_user(task.user_id).name}}</router-link>
+                <router-link :to="{name: 'user_profile', params: {userId: task_user(task.user_id).id}}" class="link">{{task_user(task.user_id).name}}</router-link>
     </div>
 </div>              
 </div>

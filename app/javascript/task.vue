@@ -60,15 +60,6 @@
             <option>5</option>
         </select>
 
-
-
-         
-         
-         
-         
-         
-
-
     </div>
     <div class="collection">
         <v-container>
@@ -78,7 +69,15 @@
             <router-link :to="{name: 'task', params: {taskId: task.id}}" v-bind:for="'task_' + task.id" class="link">
             <div id="box">
               <div id="chart">
-                <chart></chart>
+                <!-- <chart></chart> -->
+              <Chart 
+              :infra_point="task.infra_point" 
+              :backend_point="task.backend_point" 
+              :user_point="task.user_point" 
+              :unique_point="task.unique_point"
+              :plan_point="task.plan_point"
+              :front_point="task.plan_point"
+              />
               </div>
              <div class="box2"  >
                 <p class="string" v-for="tp in task_ptag(task.id)">{{tp.tag}}</p> 
@@ -96,7 +95,7 @@
              </div>
              <div class="user_box">
                  <p class="user_image"></p>
-                 <p class="username">{{user_task(task.user_id)["name"][0]}}</p>
+                 <p class="username">{{user_task(task.user_id)}}</p>
              </div>
             </div>
             </router-link>
@@ -194,7 +193,7 @@
             });
         },
         user_task(id) {
-            const u =this.user.filter(u => u.id === id )[0]
+            var u =this.user.filter(u => u.id === id )[0]['name']
             return u;
         },
         task_ptag(id) {
@@ -219,13 +218,13 @@
     width: 120px;
 }
 #chart{
-    height: 220px;
     width: 250px;
     margin:0 auto;
     border-radius: 10px;
     border: solid 4px #FF9872;
     padding-left: 5px;
     padding-right: 5px;
+    height: 220px;
 }
 #box{
     height: 300px;

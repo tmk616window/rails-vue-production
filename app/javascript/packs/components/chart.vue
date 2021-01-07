@@ -1,11 +1,9 @@
 <script>
 import { Radar	} from 'vue-chartjs';
-
-
-
 export default {
   extends: Radar,
   name: 'chart',
+  props: ["front_point","backend_point","infra_point","plan_point","user_point","unique_point"],
   data () {
     return {
       data: {
@@ -13,7 +11,8 @@ export default {
         datasets: [
           {
             label: 'ポートフォリオ',
-            data: [0,1, 2, 3, 4, 5],
+            data: [this.infra_point,this.front_point, this.backend_point, this.plan_point, this.user_point, this.unique_point],
+            // data: [0,1, 2, 3, 4, 0],
             backgroundColor: [
               'rgba(255, 99, 132, 0.2)',
             ],
@@ -24,24 +23,23 @@ export default {
           },
         ]
       },
-      options: {
-        scales: {
+      chartOption: {
+        scale: {
           ticks: {
-            // label: false,
+            label: false,
             min: 0,
             max: 5,
-            StepSize: 5,
-            showLabelBackdrop: false,
-            fontSize: 0,
+            fixedStepSize: 2,
+            showLabelBackdrop: true,
+            fontSize: 10,
             color: '#eee',
           }
-        }
+        },
       },
-
     }
   },
   mounted () {
-    this.renderChart(this.data, this.options)
+    this.renderChart(this.data, this.chartOption)
   }
 }
 </script>
