@@ -31,9 +31,9 @@ ActiveRecord::Schema.define(version: 2021_01_07_055753) do
   create_table "taskcomments", charset: "utf8", force: :cascade do |t|
     t.string "title"
     t.text "comment"
+    t.bigint "task_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.bigint "task_id"
     t.index ["task_id"], name: "index_taskcomments_on_task_id"
   end
 

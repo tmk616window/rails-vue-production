@@ -1,15 +1,24 @@
 <template>
-    <b-container class="d-flex justify-content-center">
-      <v-app>
-      <v-form class="login-form">
-        <v-card-title>ログイン</v-card-title>
-        <v-text-field v-model="loginEmail" hint="入力中。最大10文字" label="email" color="green darken-5" clearable class="login-input"></v-text-field>
-        <v-text-field v-model="loginPassword" hint="最低8文字" counter=8 color="green darken-5" clearable class="login-input" label="password" type="password"></v-text-field>
-        <v-btn @click="Logined">ログイン</v-btn>
+  <v-card width="400px" class="mx-auto mt-5">
+    <v-card-title>
+      <h3 >ログイン </h3>
+    </v-card-title>
+    <v-card-text>
+      <v-form>
+        <v-text-field prepend-icon="mdi-account-circle" v-model="loginEmail" hint="入力中。最大10文字" label="メールアドレス" />
+        <v-text-field prepend-icon="mdi-lock" append-icon="mdi-eye-off" v-model="loginPassword"   label="password" />
+        <v-btn
+          rounded
+          color="primary"
+          dark
+          @click="Logined"
+        >
+          ログイン
+        </v-btn>
     　    <router-link to="signup/">新規作成</router-link>
       </v-form>
-    </v-app>
-    </b-container>
+    </v-card-text>
+  </v-card>
 </template>
 
 <script>

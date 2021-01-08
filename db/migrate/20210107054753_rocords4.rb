@@ -1,5 +1,8 @@
 class Rocords4 < ActiveRecord::Migration[6.1]
-  def change
-    drop_table :task_comments
+  def up
+    # drop_table :task_comments
+  end
+
+  def down
   end
 end

@@ -1,15 +1,25 @@
 <template>
-    <b-container class="d-flex justify-content-center">
-        <br><br><br>
-      <v-form class="login-form">
-        <v-card-title>新規登録</v-card-title>
-        <v-text-field hint="入力中。最大10文字" color="green darken-5" clearable class="login-input" v-model="newName" label="username"></v-text-field>
-        <v-text-field hint="入力中。最大10文字" color="green darken-5" clearable class="login-input" v-model="newEmail" label="email"></v-text-field>
-        <v-text-field hint="最低8文字" counter=8 color="green darken-5" clearable class="login-input" type="password" v-model="newPassword" label="password"></v-text-field>
-        <v-text-field hint="最低10文字" counter=8 color="green darken-5" clearable class="login-input" type="password" v-model="newPassword_confirmation" label="confirm password"></v-text-field>
-        <v-btn @click="createUser">作成</v-btn>
-    </v-form>
-    </b-container>
+  <v-card width="400px" class="mx-auto mt-5">
+    <v-card-title>
+      <h3 >新規登録 </h3>
+    </v-card-title>
+    <v-card-text>
+      <v-form>
+        <v-text-field v-model="newName"  prepend-icon="mdi-account-circle"  hint="入力中。最大10文字" label="ユーザー名" />
+        <v-text-field v-model="newEmail"  prepend-icon="mdi-folder-outline" hint="入力中。最大10文字" label="メールアドレス" />
+        <v-text-field v-model="newPassword" prepend-icon="mdi-lock" append-icon="mdi-eye-off"   label="パスワード" type="password"  />
+        <v-text-field v-model="newPassword_confirmation" prepend-icon="mdi-lock" append-icon="mdi-eye-off" label="パスワード確認" type="password"  />
+        <v-btn
+          rounded
+          color="primary"
+          dark
+          @click="createUser"
+        >
+          登録
+        </v-btn>
+      </v-form>
+    </v-card-text>
+  </v-card>
 </template>
 
 <script>
@@ -40,9 +50,7 @@
                 this.newName = '';
                 this.newPassword = '';
                 this.newPassword_confirmation = '';
-                axios.get('/api/users').then(response => {
-                this.users = response.data.users
-                });
+                this.$router.push('/login')
             });
         },
     }

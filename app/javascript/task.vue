@@ -3,67 +3,14 @@
     <a href="/login">aaaa</a>
     <label for="">新規作成</label>
     <div>
-        <v-text-field v-model="newTask" type="text" name="" class="postinput"/>
-        <v-btn @click='createTask'>作成</v-btn>
+  <v-btn v-on:click="show" class="button">投稿</v-btn>
 
-        <select v-model="new_backend_point">
-            <option disabled value="">0</option>
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
-            <option>5</option>
-        </select>
 
-        <select v-model="new_plan_point">
-            <option disabled value="">0</option>
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
-            <option>5</option>
-        </select>
-
-        <select v-model="new_unique_point">
-            <option disabled value="">0</option>
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
-            <option>5</option>
-        </select>
-
-        <select v-model="new_user_point">
-            <option disabled value="">0</option>
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
-            <option>5</option>
-        </select>
-
-        <select v-model="new_front_point">
-            <option disabled value="">0</option>
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
-            <option>5</option>
-        </select>
-
-        <select v-model="new_infra_point">
-            <option disabled value="">0</option>
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
-            <option>5</option>
-        </select>
 
     </div>
     <div class="collection">
         <v-container>
-            <v-row classr="dark" style="height: 450px;">
+        <v-row classr="dark" style="height: 450px;">
         <div v-for="task in tasks" class="list" >
         <v-card hover width="300" height="410" class="card">
             <router-link :to="{name: 'task', params: {taskId: task.id}}" v-bind:for="'task_' + task.id" class="link">
@@ -78,7 +25,7 @@
               :front_point="task.plan_point"
               />
               </div>
-             <div class="box2"  >
+             <div class="box2">
                 <p class="string" v-for="tp in task_ptag(task.id)">{{tp.tag}}</p> 
              </div>
 
@@ -106,6 +53,165 @@
     <div class="user_form">
         <p class="user_form_image"></p>
     </div>
+
+        <modal name="hello-world" width="90%" height="auto" :scrollable="true" :draggable="true" >
+
+        <v-container fluid>
+            <v-row align="center">
+            <v-col cols="5">
+                <v-subheader>
+                インフラ
+                </v-subheader>
+            </v-col>
+
+            <v-col cols="5">
+                <v-select
+                v-model="new_infra_point"
+                :items="items"
+                label="Select"
+                persistent-hint
+                return-object
+                single-line
+                ></v-select>
+            </v-col>
+            </v-row>
+        </v-container>
+
+        <v-container fluid>
+            <v-row align="center">
+            <v-col cols="5">
+                <v-subheader>
+                フロントエンド
+                </v-subheader>
+            </v-col>
+
+            <v-col cols="5">
+                <v-select
+                v-model="new_front_point"
+                :items="items"
+                label="Select"
+                persistent-hint
+                return-object
+                single-line
+                ></v-select>
+            </v-col>
+            </v-row>
+        </v-container>
+
+        <v-container fluid>
+            <v-row align="center">
+            <v-col cols="5">
+                <v-subheader>
+                バックエンド
+                </v-subheader>
+            </v-col>
+
+            <v-col cols="5">
+                <v-select
+                v-model="new_backend_point"
+                :items="items"
+                label="Select"
+                persistent-hint
+                return-object
+                single-line
+                ></v-select>
+            </v-col>
+            </v-row>
+        </v-container>
+
+        <v-container fluid>
+            <v-row align="center">
+            <v-col cols="5">
+                <v-subheader>
+                企画力
+                </v-subheader>
+            </v-col>
+
+            <v-col cols="5">
+                <v-select
+                v-model="new_plan_point"
+                :items="items"
+                label="Select"
+                persistent-hint
+                return-object
+                single-line
+                ></v-select>
+            </v-col>
+            </v-row>
+        </v-container>
+
+        <v-container fluid>
+            <v-row align="center">
+            <v-col cols="5">
+                <v-subheader>
+                ユーザビリティ
+                </v-subheader>
+            </v-col>
+
+            <v-col cols="5">
+                <v-select
+                v-model="new_user_point"
+                :items="items"
+                label="Select"
+                persistent-hint
+                return-object
+                single-line
+                ></v-select>
+            </v-col>
+            </v-row>
+        </v-container>
+
+        <v-container fluid>
+            <v-row align="center">
+            <v-col cols="5">
+                <v-subheader>
+                独自性
+                </v-subheader>
+            </v-col>
+
+            <v-col cols="5">
+                <v-select
+                v-model="new_unique_point"
+                :items="items"
+                label="Select"
+                persistent-hint
+                return-object
+                single-line
+                ></v-select>
+            </v-col>
+            </v-row>
+        </v-container>
+
+        <v-container fluid>
+            <v-row align="center">
+            <v-col cols="5">
+                <v-subheader>
+                GitHub URL
+                </v-subheader>
+            </v-col>
+
+            <v-col cols="5">
+                git fkoprkmfoperkmfoprekmfore
+            </v-col>
+            </v-row>
+        </v-container>
+
+
+        <div class="modal_btn">
+        　<v-btn @click='createTask' class="modal_next_btn">次へ</v-btn>
+          <v-btn v-on:click="hide">閉じる</v-btn>
+        </div>
+
+  </modal>
+
+  <modal name="task" width="90%" height="auto" :scrollable="true" :draggable="true" >
+        <p>d.cw.;c,.w@p;c,epw@,vre</p>
+        <div class="modal_btn">
+        　<v-btn @click='show_Task' class="modal_next_btn">次へ</v-btn>
+          <v-btn v-on:click="hide">閉じる</v-btn>
+        </div>
+  </modal>
+
     </v-app>
 </template>
 <script>
@@ -121,9 +227,11 @@
      },
      data() {
        return {
+        items: [0,1,2,3,4,5],
          ptag: [],  
          user: [],  
          task: [],
+         t: [],
          tasks: [],
          task: {
              id: '',
@@ -168,15 +276,20 @@
          createTask(){
              axios.post('/api/tasks', {task: {name: this.newTask, user_id: this.userLogin.id,backend_point: this.new_backend_point,front_point: this.new_front_point,plan_point: this.new_plan_point,infra_point: this.new_infra_point,unique_point: this.new_unique_point,user_point: this.new_user_point}}).then(response => {
                 this.newTask = '';
-                var element = document.documentElement;
-                var bottom = element.scrollHeight - element.clientHeight;
-                window.scroll(0, bottom);
-                axios.get('/api/tasks').then(response => {
+                this.t = response.data
+                this.$router.push({})
+            });
+            axios.get('/api/tasks').then(response => {
                 this.tasks = response.data.tasks
-                });
             });
         },
-         updateTask(id) {
+        show_Task(){
+            this.fetchTasks();
+            const last = this.tasks.slice(-1)[0]['id']; 
+            console.log({last}); 
+            this.$router.push('/' + last)
+        },
+        updateTask(id) {
              axios.put('/api/tasks/' + id , {task: {name: this.putTask}}).then(response => {
                 this.putTask = '';
                 axios.get('/api/tasks').then(response => {
@@ -192,20 +305,43 @@
             });
         },
         user_task(id) {
-            var u =this.user.filter(u => u.id === id )[0]['name']
-            return u;
+            var uu = []
+            var u =this.user.filter(u => u.id === id )[0]
+            for(var i in u) {
+                uu.push(u[i])
+            }
+            return uu[1]
+        },
+        task_show(id) {
+            var uu = []
+            var u =this.user.filter(u => u.id === id )[0]
+            for(var i in u) {
+                uu.push(u[i])
+            }
+            return uu[1]
         },
         task_ptag(id) {
             const p =this.ptag.filter(p => p.task_id === id )
             return p;
-        }
+        },
+        show() {
+            this.$modal.show('hello-world');
+        },
+        hide() {
+            this.$modal.hide('hello-world');
+        },
+        tshow() {
+            this.$modal.show('task');
+        },
+        thide() {
+            this.$modal.hide('task');
+        },
     },
-  computed:{
-    userLogin(){
-      return this.$store.getters.login
+    computed:{
+        userLogin(){
+        return this.$store.getters.login
+        }
     }
-  }
-    
    }
 </script>
 
@@ -316,5 +452,17 @@
     margin-left:10px ;
     display: inline-block;
     border-radius: 10px;
+}
+
+.modal{
+
+}
+
+.modal_btn{
+    padding: 10px 10px 10px 10px;
+}
+
+.modal_next_btn{
+    float: right;
 }
 </style>

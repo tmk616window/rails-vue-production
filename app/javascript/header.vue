@@ -97,6 +97,10 @@ export default {
 </script>
 
 <style scoped>
+body{
+  margin-top: 150px;
+  margin-bottom: 150px;
+}
 div{
   height: 25px;
 }

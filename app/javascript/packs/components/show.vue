@@ -22,7 +22,7 @@
         <div class="box">
                      <p class="article">
                          ・開発言語
-                            <v-btn dark fab color="red" class="add-button-icon" @click="addInput">＋</v-btn>
+                            <v-btn dark fab color="red" class="add-button-icon" @click="addInput" height="23px" width="23px">＋</v-btn>
                             <button type="button" @click="onSubmit" class="add-button-ptag">送信</button>
                          </p>
                      <div class="lang">
@@ -32,12 +32,12 @@
                         </p>
                         <p v-for="(text,index) in texts" class="string">
                             <input type="text" v-model="texts[index]" size=10>
-                            <v-btn dark fab color="red" class="add-button-icon" @click="removeInput(index)">－</v-btn>
+                            <v-btn dark fab color="red" class="add-button-icon" @click="removeInput(index)" height="23px" width="23px">－</v-btn>
                         </p>
                      </div>    
                         <p class="article">
                             ・インフラ
-                            <v-btn dark fab color="red" class="add-button-icon" @click="addInputitag">＋</v-btn>
+                            <v-btn dark fab color="red" class="add-button-icon" @click="addInputitag" height="23px" width="23px">＋</v-btn>
                             <button type="button" @click="ionSubmit" class="add-button-ptag">送信</button>
                         </p>
                      <div class="lang">
@@ -47,35 +47,41 @@
                         </p>
                         <p v-for="(itext,index) in itexts" class="string">
                             <input type="text" v-model="itexts[index]" size=10>
-                            <!--<button type="button" @click="removeInput(index)">削除</button>-->
-                            <v-btn dark fab color="red" class="add-button-icon" @click="iremoveInput(index)">－</v-btn>
+                            <v-btn dark fab color="red" class="add-button-icon" @click="iremoveInput(index)" height="23px" width="23px">－</v-btn>
                         </p>
                      </div>
                         <p class="article">・URL</p>
                      <div class="lang">
                         <a href="https://644b6d9b325a4fff87a89af4cf0fc21d.vfs.cloud9.ap-northeast-1.amazonaws.com/22">https://644b6d9b325a4fff87a89af4cf0fc21d.vfs.cloud9.ap-northeast-1.amazonaws.com/22</a>
                      </div>
-                        <p class="article">・会社</p>
-                     <div class="lang">
-                        自社開発
-                        社員数：20人
-                        新卒
-                     </div>
         </div>
+        <v-btn dark fab color="red" class="add-button-icon" @click="addInputTc" height="23px" width="23px">＋</v-btn>
         <button type="button" @click="TConSubmit" class="add-button-ptag">送信</button>
-        <v-btn dark fab color="red" class="add-button-icon" @click="addInputTc">＋</v-btn>
         <div v-for="tc in taskcomments">
             <p class="comment_string">
                 {{tc.title}}
+                <v-icon @click="deleteTCs(tc.id)">mdi-delete</v-icon>        
             </p>
-            <div class="comment">{{tc.comment}}</div>                        
+
+            <div class="comment">{{tc.comment}}</div>
         </div>
+
         <div v-for="(tc, index) in TCs">
                 <p class="comment_string">
-                    <input type="text" v-model="tc.tct" size=10>
+                    <v-text-field
+                        label="Title"
+                        v-model="tc.tct"
+                    ></v-text-field>
                 </p>
+
                 <div class="comment">
-                    <input type="text" v-model="tc.tcc" size=10>
+                    <v-textarea
+                    background-color="grey lighten-2"
+                    color="cyan"
+                    label="text"
+                    v-model="tc.tcc"
+                    ></v-textarea>
+                    <v-btn height="23px" width="23px" dark fab color="red" class="add-button-icon" @click="removeTC(index)" >－</v-btn>
                 </div>
         </div>
     </div>
@@ -84,7 +90,7 @@
     <div class="user_image">
     </div>
     <div class="user_name">
-        <router-link :to="{name: 'user_profile', params: {userId: task_user(task.user_id).id}}" class="link">{{task_user(task.user_id).name}}</router-link>
+        <router-link :to="{name: 'user_profile', params: {userId: task_user(task.user_id)}}" class="link">{{task_user_name(task.user_id)}}</router-link>
     </div>
 </div>              
 </div>
@@ -101,6 +107,7 @@
        return {
          task: [],
          id: this.$route.params.taskId,
+         t: [],
          user: [],
          ptag: [],
          ptags: [],
@@ -118,17 +125,21 @@
         this.fetchTasks(this.id);
         this.fetchPtags(this.id);
         this.fetchItags(this.id);
-        this.fetchTaskcomments(this.id);        
+        this.fetchTaskcomments(this.id);
         // this.fetchUsers();
+        this.fetchUsers();
+        this.task_user();      
     },
     mounted(){
-        this.axios.get('/api/users/').then(response => {
-                this.user = response.data.users
-        });
         // this.fetchTasks(this.id);
         // this.fetchUsers();
     },
     methods: {
+        fetchUsers() {
+            axios.get('/api/users/').then(response => {
+                    this.user = response.data.users
+            });
+        },
         fetchTasks(id) {
                 axios.get('/api/tasks/' + id ).then(response => {
                 this.task = response.data
@@ -188,6 +199,9 @@
         addInputTc() {
             this.TCs.push({tct:'', tcc: ''}); 
         },
+        removeTC(index){
+            this.TCs.splice(index, 1);
+        },
         onSubmit() {
             for(let i = 0; i < this.texts.length; i++) {
              axios.post('/api/ptags', {ptag: {tag: this.texts[i],task_id: this.id}}).then(res => {
@@ -232,9 +246,24 @@
                 });
              });
         },
-        task_user(i) {
-            const u = this.user.filter(u => u.id === i )[0]
-            return u;
+        deleteTCs(id){
+             axios.delete('/api/taskcomments/' + id ).then(response => {
+                this.fetchTaskcomments(this.id);     
+             });
+        },
+        task_user(id) {
+            var uu = []
+            var u =this.user.filter(u => u.id === id )[0]
+            for(var i in u) {
+                uu.push(u[i])
+            }
+            console.log(uu)
+            return uu[0]
+        },
+        task_user_name(id) {
+            var uu = []
+            var u =this.user.filter(u => u.id === id )[0]['name']
+            return u
         },
         show() {
             this.$modal.show('hello-world');
@@ -331,6 +360,7 @@
     background-color: #F5F5F5;
     border: solid 4px #EEEEEE;
     border-radius: 10px;
+    width:90%;
 }
 .user_box{
     margin-left: 50px;
@@ -347,8 +377,8 @@
 }
 
 .add-button-icon{
-    height: 18px;
-    width: 18px;
+    height: 10px;
+    width: 10px;
 }
 
 .add-button-ptag{
