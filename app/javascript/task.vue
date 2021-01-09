@@ -4,10 +4,8 @@
     <label for="">新規作成</label>
     <div>
   <v-btn v-on:click="show" class="button">投稿</v-btn>
-
-
-
     </div>
+
     <div class="collection">
         <v-container>
         <v-row classr="dark" style="height: 450px;">
@@ -204,12 +202,56 @@
 
   </modal>
 
-  <modal name="task" width="90%" height="auto" :scrollable="true" :draggable="true" >
-        <p>d.cw.;c,.w@p;c,epw@,vre</p>
-        <div class="modal_btn">
-        　<v-btn @click='show_Task' class="modal_next_btn">次へ</v-btn>
-          <v-btn v-on:click="hide">閉じる</v-btn>
+  <modal  name="task" width="90%" height="auto" :scrollable="true" :draggable="true" >
+      <div class="task_reference">
+
+                     <p class="article">
+                         ・開発言語
+                            <v-btn dark fab color="red" class="add-button-icon" @click="addInput" height="23px" width="23px">＋</v-btn>
+                         </p>
+                     <div class="lang">
+                        <p v-for="(text,index) in texts" class="string">
+                            <input type="text" v-model="texts[index]" size=10>
+                            <v-btn dark fab color="red" class="add-button-icon" @click="removeInput(index)" height="23px" width="23px">－</v-btn>
+                        </p>
+                     </div>    
+                        <p class="article">
+                            ・インフラ
+                            <v-btn dark fab color="red" class="add-button-icon" @click="addInputitag" height="23px" width="23px">＋</v-btn>
+                        </p>
+                     <div class="lang">
+                        <p v-for="(itext,index) in itexts" class="string">
+                            <input type="text" v-model="itexts[index]" size=10>
+                            <v-btn dark fab color="red" class="add-button-icon" @click="iremoveInput(index)" height="23px" width="23px">－</v-btn>
+                        </p>
+                    </div>
+                        <p class="article">
+                            ・テキスト
+                            <v-btn dark fab color="red" class="add-button-icon" @click="addInputTc" height="23px" width="23px">＋</v-btn>
+                        </p>
+                    <div v-for="(tc, index) in TCs">
+                            <p class="comment_string">
+                                <v-text-field
+                                    label="Title"
+                                    v-model="tc.tct"
+                                ></v-text-field>
+                            </p>
+
+                            <div class="comment">
+                                <v-textarea
+                                background-color="grey lighten-2"
+                                color="cyan"
+                                label="text"
+                                v-model="tc.tcc"
+                                ></v-textarea>
+                                <v-btn height="23px" width="23px" dark fab color="red" class="add-button-icon" @click="removeTC(index)" >－</v-btn>
+                            </div>
         </div>
+        <div class="modal_btn">
+        　<v-btn @click='Task_reference()' class="modal_next_btn">作成</v-btn>
+          <v-btn v-on:click="thide">閉じる</v-btn>
+        </div>
+      </div>
   </modal>
 
     </v-app>
@@ -228,6 +270,14 @@
      data() {
        return {
         items: [0,1,2,3,4,5],
+         ptag: [],
+         ptags: [],
+         itags: [],
+         itexts:[],
+         texts:[],
+         taskcomments: [],
+         TCs: [
+         ],
          ptag: [],  
          user: [],  
          task: [],
@@ -247,10 +297,6 @@
          putTask: '',
          userId: this.storeuserId
        }
-     },
-     mounted () {
-        // this.$refs.ThumbsUp.$data.active = true;
-        // console.log(this.$refs.ThumbsUp.$Adata);
      },
      created(){
          this.fetchTasks();
@@ -277,17 +323,18 @@
              axios.post('/api/tasks', {task: {name: this.newTask, user_id: this.userLogin.id,backend_point: this.new_backend_point,front_point: this.new_front_point,plan_point: this.new_plan_point,infra_point: this.new_infra_point,unique_point: this.new_unique_point,user_point: this.new_user_point}}).then(response => {
                 this.newTask = '';
                 this.t = response.data
-                this.$router.push({})
+                this.hide()
+                this.tshow();
             });
-            axios.get('/api/tasks').then(response => {
-                this.tasks = response.data.tasks
-            });
+            this.fetchTasks();
         },
         show_Task(){
             this.fetchTasks();
-            const last = this.tasks.slice(-1)[0]['id']; 
-            console.log({last}); 
+            var t =this.tasks.filter(t => t.user_id === this.userLogin.id )
+            const last = t.slice(-1)[0]['id']; 
+            console.log({last});
             this.$router.push('/' + last)
+            return last 
         },
         updateTask(id) {
              axios.put('/api/tasks/' + id , {task: {name: this.putTask}}).then(response => {
@@ -335,6 +382,60 @@
         },
         thide() {
             this.$modal.hide('task');
+        },
+        onSubmit() {
+            for(let i = 0; i < this.texts.length; i++) {
+             axios.post('/api/ptags', {ptag: {tag: this.texts[i],task_id: this.show_Task()}}).then(res => {
+                axios.get('/api/ptags/' + this.id).then(response => {
+                this.ptags = response.data.ptags
+                });
+                 this.texts.splice(0)
+             })
+           }
+        },
+        ionSubmit() {
+            for(let i = 0; i < this.itexts.length; i++) {
+             axios.post('/api/itags', {itag: {tag: this.itexts[i],task_id: this.show_Task()}}).then(res => {
+                axios.get('/api/itags/' + this.id).then(response => {
+                this.itags = response.data.itags
+                });
+                 this.itexts.splice(0)
+             })
+           }
+        },
+        TConSubmit() {
+            for(let i = 0; i < this.TCs.length; i++) {
+             axios.post('/api/taskcomments', {taskcomment: {title: this.TCs[i].tct,comment: this.TCs[i].tcc,task_id: this.show_Task()}}).then(res => {
+                axios.get('/api/taskcomments/' + this.id).then(response => {
+                    this.taskcomments = response.data.taskcomments
+                });
+                 this.TCs.splice(0)
+             }) 
+           }
+        },
+        removeInput(index) {
+            this.texts.splice(index, 1);
+        },
+        iremoveInput(index) {
+            this.itexts.splice(index, 1);
+        },
+        addInput() {
+            this.texts.push(''); 
+        },
+        addInputitag() {
+            this.itexts.push(''); 
+        }, 
+        addInputTc() {
+            this.TCs.push({tct:'', tcc: ''}); 
+        },
+        removeTC(index){
+            this.TCs.splice(index, 1);
+        },
+        Task_reference(){
+            this.thide();
+            this.ionSubmit();
+            this.onSubmit();
+            this.show_Task();
         },
     },
     computed:{
@@ -465,4 +566,24 @@
 .modal_next_btn{
     float: right;
 }
+
+.comment_string{
+    margin: 0;
+    margin-left: 20px;
+}    
+.comment{
+    border: solid 1px black;
+    margin-right: 10px;
+    margin-left: 20px;
+    padding:10px 10px 10px 10px;
+    background-color: #F5F5F5;
+    border: solid 4px #EEEEEE;
+    border-radius: 10px;
+    width:90%;
+}
+
+.task_reference{
+    padding: 20px 20px 20px 20px;
+}
+
 </style>
