@@ -1,30 +1,26 @@
 <template>
-<div>
-    <br><br><br><br>
-    <div class="profile">
-        <div class="icon">
-            <p>aaa</p>
-            
+  <v-card width="800px" class="mx-auto mt-5 profile">
+    <v-card-title>
+      <h3 >プロフィール </h3>
+    </v-card-title>
+    <v-card-text>
+      <div>
+          <p class="icon"></p>
+      </div>
+      <div class="name">
+        <p>name</p>
+      </div>
+        <div class="follow">
+            <p class="follow_string">フォロワー：{{}}</p>
+            <p>フォロー：{{}}</p>
         </div>
-        <div class="text">
-            <label for="">名前</label>
-            <p>難波智貴</p>   
-            <label for="">年齢</label>
-            <p>22</p>   
-            <label for="">職業</label>
-            <p>難波智貴</p>   
-            <label for="">mk</label>
-            <p>難波智貴</p>   
+        <div class="content">
+          <p>年齢：　　　　　{{}}</p>
+          <p>職業：　　　　　{{}}</p>
         </div>
-        <div class="comment">
-            コメント
-            <div class="comment_input">
+    </v-card-text>
+  </v-card>
 
-            </div>
-        </div>        
-    </div>
-
-</div>
 </template>
 
 
@@ -50,25 +46,50 @@
 </script>
 <style scoped>
 .profile{
-    border: solid black 1px;
-    margin-right: 20px;
-    margin-left: 20px;
-    padding: 20px;
+
 }
 .icon{
-    float: left;
     border:solid black 1px;
     height: 200px;
     width: 200px;
+    border-radius: 50%;
+    margin:0 auto;
 }
 .text{
-    display: inline-block;
     margin-left: 70px;
     margin-top: 10px;
 
 }
+
+.content p{
+    text-align: center;
+}
+
 .comment_input{
     border:solid black 1px;
     padding: 20px;
+    padding-bottom: 40px;
+    max-width: 80%;
+    margin: 0 auto;
+}
+
+.follow{
+  text-align: center;
+}
+
+.follow p{
+	display: inline-block;
+
+}
+
+.content{
+  margin:0 auto;
+}
+
+.follow_string{
+}
+
+.name p {
+  text-align:center;
 }
 </style>

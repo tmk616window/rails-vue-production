@@ -316,10 +316,11 @@
 .card{
     background-color: #FFFAFA;
     padding-top: 20px;
+    padding-bottom: 20px;
     color: red;
     width: 850px;
-    height: 1000px;
     margin:0 auto;
+    margin-bottom: 20px;
     float: left;
 }
 .string{

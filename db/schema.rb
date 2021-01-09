@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_07_055753) do
+ActiveRecord::Schema.define(version: 2021_01_08_171936) do
 
   create_table "itags", charset: "utf8", force: :cascade do |t|
     t.string "tag"
@@ -59,6 +59,8 @@ ActiveRecord::Schema.define(version: 2021_01_07_055753) do
     t.string "icon"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "job"
+    t.text "usercomment"
   end
 
   add_foreign_key "itags", "tasks"

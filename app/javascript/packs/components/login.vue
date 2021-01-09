@@ -36,9 +36,6 @@
            }
          },
          methods: {
-            //  Logined(){
-            //         this.$store.dispatch('isLoggedIn')
-            // },
                 Logined(){
                      axios.post('/api/sessions', {session: {email: this.loginEmail, password: this.loginPassword}})
                     .then(res => {
@@ -46,28 +43,12 @@
                         this.loginPassword = '',
                         this.$store.dispatch('isLoggedIn')
                         this.$router.push('/')
-                    // this.$stroe.commit('getUser', res.data)
                 })
             }
             
          },
-         computed:{
-            // loginEmail(){
-            //   return this.$store.state.loginEmail
-            // },
-            // loginPassword(){
-            //   return this.$store.state.loginPassword
-            // }
-         }
   }
 </script>
 
 <style>
-.login-input{
-    width: 400px;
-  }
-.login-form{
-  padding:10px 10px 10px 10px; 
-  border: solid black 1px;
-}  
 </style>

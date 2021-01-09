@@ -31,17 +31,12 @@
    export default {
      data: function () {
        return {
-        //  form1: "<input v-model='putTask' type='text' />",
-         tasks: [],
          newName: '',
          newEmail: '',
          newPassword: '',
          newPassword_confirmation: ''
        }
      },
-    //  created: function(){
-    //      this.fetchTasks();
-    //  },
      methods: {
          createUser(){
              axios.post('/api/users', {user: {name: this.newName, email: this.newEmail, password: this.newPassword, password_confirmation: this.newPassword_confirmation}}).then(response => {
@@ -58,11 +53,4 @@
 </script>
 
 <style>
-.login-input{
-    width: 400px;
-  }
-.login-form{
-  padding:10px 10px 10px 10px; 
-  border: solid black 1px;
-}  
 </style>
