@@ -7,6 +7,7 @@
 <div class="show_box">
     <div class="card">
     <div>
+
         <div class="chart">
               <Chart 
               :infra_point="task.infra_point" 
@@ -19,7 +20,17 @@
         </div>
         <div>
         </div>
+        
         <div class="box">
+            <div v-if='userLike()'>
+                <button @click="deleteLikes()">いいねかいじょ</button>
+            </div>
+            <div v-else>
+                <button @click="createLike()">いいね</button>
+            </div>                
+<!-- <button @click='userLike()'>qqaq{{userLike().id}}</button> -->
+<p>{{like}}</p>
+<p>{{Like_count()}}</p>
                      <p class="article">
                          ・開発言語
                             <v-btn dark fab color="red" class="add-button-icon" @click="addInput" height="23px" width="23px">＋</v-btn>
@@ -105,6 +116,7 @@
       },
      data() {
        return {
+         like: [],  
          task: [],
          id: this.$route.params.taskId,
          t: [],
@@ -126,6 +138,7 @@
         this.fetchPtags(this.id);
         this.fetchItags(this.id);
         this.fetchTaskcomments(this.id);
+        this.fetchLike(this.id);
         // this.fetchUsers();
         this.fetchUsers();
         this.task_user();      
@@ -159,6 +172,19 @@
                 axios.get('/api/taskcomments/' + id).then(response => {
                 this.taskcomments = response.data.taskcomments
                 });
+        },
+        fetchLike(id){
+                axios.get('/api/likes/' + id).then(response => {
+                this.like = response.data.likes
+                });
+        },
+        Like_count(){
+            return this.like.length
+        },
+        userLike(){
+                var l =this.like.filter(l => l.user_id === this.userLogin.id )[0]
+                console.log(l)
+                return l
         },
          updateTask(id) {
              axios.put('/api/tasks/' + id , {task: {name: this.putTask}}).then(response => {
@@ -232,6 +258,11 @@
              }) 
            }
         },
+         createLike(){
+             axios.post('/api/likes/', {like: {task_id: this.id, user_id: this.userLogin.id}}).then(response => {
+                this.fetchLike(this.id);     
+            });
+        },
         deletePtag(id){
              axios.delete('/api/ptags/' + id ).then(response => {
                 axios.get('/api/ptags/' + this.id).then(response => {
@@ -249,6 +280,12 @@
         deleteTCs(id){
              axios.delete('/api/taskcomments/' + id ).then(response => {
                 this.fetchTaskcomments(this.id);     
+             });
+        },
+        deleteLikes(id){
+            var l =this.like.filter(l => l.user_id === this.userLogin.id )[0]['id']
+             axios.delete('/api/likes/' + l ).then(response => {
+                this.fetchLike(this.id);     
              });
         },
         task_user(id) {
@@ -270,7 +307,7 @@
         },
         hide() {
             this.$modal.hide('hello-world');
-        },    
+        },
     },
     computed:{
         userLogin(){

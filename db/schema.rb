@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_08_171936) do
+ActiveRecord::Schema.define(version: 2021_01_09_183954) do
 
   create_table "itags", charset: "utf8", force: :cascade do |t|
     t.string "tag"
@@ -18,6 +18,15 @@ ActiveRecord::Schema.define(version: 2021_01_08_171936) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["task_id"], name: "index_itags_on_task_id"
+  end
+
+  create_table "likes", charset: "utf8", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "task_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["task_id"], name: "index_likes_on_task_id"
+    t.index ["user_id"], name: "index_likes_on_user_id"
   end
 
   create_table "ptags", charset: "utf8", force: :cascade do |t|
@@ -64,6 +73,8 @@ ActiveRecord::Schema.define(version: 2021_01_08_171936) do
   end
 
   add_foreign_key "itags", "tasks"
+  add_foreign_key "likes", "tasks"
+  add_foreign_key "likes", "users"
   add_foreign_key "ptags", "tasks"
   add_foreign_key "taskcomments", "tasks"
   add_foreign_key "tasks", "users"

@@ -18,6 +18,9 @@ export default new Vuex.Store({
     // signin: 'aa',
     
   },
+  created(){
+
+  },
   mutations: {  
     getUser(state, user){
       state.user = user
@@ -38,7 +41,7 @@ export default new Vuex.Store({
         .then(res => {
         commit('getUser', res.data)
         })
-    },
+    },   
     async logout({commit}, state, id, signin) {
         await axios.delete('/api/sessions/' + this.state.user.id)
             .then(response => {
@@ -53,7 +56,7 @@ export default new Vuex.Store({
               commit('deleteUser')
               // state.signin = !state.signin
             });
-        },
+        },  
   },
 
 // export const actions = {

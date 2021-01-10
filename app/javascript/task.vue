@@ -5,7 +5,7 @@
     <div>
   <v-btn v-on:click="show" class="button">投稿</v-btn>
     </div>
-
+<p>{{fetchLike()}}</p>
     <div class="collection">
         <v-container>
         <v-row classr="dark" style="height: 450px;">
@@ -30,7 +30,7 @@
              <div>
                  <div class="like_box">
                     <p class="like_image"></p>
-                    <p class="like_number">20</p>
+                    <p class="like_number">{{task_like_count(task.id)}}</p>
                  </div>
                  <div class="message_box">
                     <p class="message_image"></p>
@@ -269,6 +269,7 @@
      },
      data() {
        return {
+           like:[],
         items: [0,1,2,3,4,5],
          ptag: [],
          ptags: [],
@@ -302,6 +303,7 @@
          this.fetchTasks();
          this.fetchUser();
          this.fetchPtag();
+         this.fetchLike();
      },
      methods: {
          fetchTasks() {
@@ -317,6 +319,11 @@
          fetchPtag() {
             axios.get('/api/ptags/').then(response => {
                 this.ptag = response.data.ptags
+             })
+         },
+         fetchLike() {
+            axios.get('/api/likes/').then(response => {
+                this.like = response.data.likes
              })
          },
          createTask(){
@@ -370,6 +377,10 @@
         task_ptag(id) {
             const p =this.ptag.filter(p => p.task_id === id )
             return p;
+        },
+        task_like_count(id){
+            const l =this.like.filter(l => l.task_id === id )
+            return l.length;
         },
         show() {
             this.$modal.show('hello-world');
