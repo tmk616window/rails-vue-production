@@ -329,11 +329,10 @@
          createTask(){
              axios.post('/api/tasks', {task: {name: this.newTask, user_id: this.userLogin.id,backend_point: this.new_backend_point,front_point: this.new_front_point,plan_point: this.new_plan_point,infra_point: this.new_infra_point,unique_point: this.new_unique_point,user_point: this.new_user_point}}).then(response => {
                 this.newTask = '';
-                this.t = response.data
+                this.fetchTasks();
                 this.hide()
                 this.tshow();
             });
-            this.fetchTasks();
         },
         show_Task(){
             this.fetchTasks();
@@ -446,6 +445,7 @@
             this.thide();
             this.ionSubmit();
             this.onSubmit();
+            this.TConSubmit();
             this.show_Task();
         },
     },

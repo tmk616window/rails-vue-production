@@ -7,7 +7,7 @@
 <div class="show_box">
     <div class="card">
     <div>
-
+    <div>
         <div class="chart">
               <Chart 
               :infra_point="task.infra_point" 
@@ -18,23 +18,22 @@
               :front_point="task.plan_point"
               />
         </div>
-        <div>
-        </div>
-        
+
         <div class="box">
+            <div class="user_name">
+                ユーザー：<router-link :to="{name: 'user_profile', params: {userId: task_user(task.user_id)}}" class="link">{{task_user_name(task.user_id)}}</router-link>
+            </div>
+
             <div v-if='userLike()'>
                 <button @click="deleteLikes()">いいねかいじょ</button>
             </div>
             <div v-else>
                 <button @click="createLike()">いいね</button>
             </div>                
-<!-- <button @click='userLike()'>qqaq{{userLike().id}}</button> -->
-<p>{{like}}</p>
-<p>{{Like_count()}}</p>
                      <p class="article">
                          ・開発言語
                             <v-btn dark fab color="red" class="add-button-icon" @click="addInput" height="23px" width="23px">＋</v-btn>
-                            <button type="button" @click="onSubmit" class="add-button-ptag">送信</button>
+                            <button type="button" @click="onSubmit" class="add-button-ptag">作成</button>
                          </p>
                      <div class="lang">
                         <p v-for="ptag in ptags" class="string">
@@ -49,7 +48,7 @@
                         <p class="article">
                             ・インフラ
                             <v-btn dark fab color="red" class="add-button-icon" @click="addInputitag" height="23px" width="23px">＋</v-btn>
-                            <button type="button" @click="ionSubmit" class="add-button-ptag">送信</button>
+                            <button type="button" @click="ionSubmit" class="add-button-ptag">作成</button>
                         </p>
                      <div class="lang">
                         <p v-for="itag in itags" class="string">
@@ -61,13 +60,16 @@
                             <v-btn dark fab color="red" class="add-button-icon" @click="iremoveInput(index)" height="23px" width="23px">－</v-btn>
                         </p>
                      </div>
-                        <p class="article">・URL</p>
-                     <div class="lang">
-                        <a href="https://644b6d9b325a4fff87a89af4cf0fc21d.vfs.cloud9.ap-northeast-1.amazonaws.com/22">https://644b6d9b325a4fff87a89af4cf0fc21d.vfs.cloud9.ap-northeast-1.amazonaws.com/22</a>
-                     </div>
         </div>
+
+    </div>
+        <div class="lang">
+            <p class="article">・URL</p>
+            <a href="https://644b6d9b325a4fff87a89af4cf0fc21d.vfs.cloud9.ap-northeast-1.amazonaws.com/22">https://644b6d9b325a4fff87a89af4cf0fc21d.vfs.cloud9.ap-northeast-1.amazonaws.com/22</a>
+        </div>
+        ・テキスト
         <v-btn dark fab color="red" class="add-button-icon" @click="addInputTc" height="23px" width="23px">＋</v-btn>
-        <button type="button" @click="TConSubmit" class="add-button-ptag">送信</button>
+        <button type="button" @click="TConSubmit" class="add-button-ptag">作成</button>
         <div v-for="tc in taskcomments">
             <p class="comment_string">
                 {{tc.title}}
@@ -97,13 +99,10 @@
         </div>
     </div>
 </div>
-<div class="user_box">
+<!-- <div class="user_box">
     <div class="user_image">
     </div>
-    <div class="user_name">
-        <router-link :to="{name: 'user_profile', params: {userId: task_user(task.user_id)}}" class="link">{{task_user_name(task.user_id)}}</router-link>
-    </div>
-</div>              
+</div>               -->
 </div>
   </v-app>
 </template>
@@ -338,27 +337,30 @@
 }
 .chart{
     padding: 5px 5px 5px 5px;
-    margin-right: 10px;
-    display: inline-block;
-    height: 300px;
-    width: 310px;
+    /* margin-right: 10px; */
+    /* display: inline-block; */
+    height: 65%;
+    width: 80%;
     /*margin:0 auto ;*/
     border: solid 4px #FF9872;
     border-radius: 10px;
     /*float: right;*/
-    display: inline-block;
-    margin-left: 20px;
-    float: left;
-}    
+    /* display: inline-block; */
+    /* margin-left: 20px; */
+    margin:0 auto;
+    /* float: right; */
+}
 .card{
     background-color: #FFFAFA;
     padding-top: 20px;
     padding-bottom: 20px;
-    color: red;
-    width: 850px;
+    color:;
+    /* max-width: 70px; */
+    /* width: 850px; */
+    padding: 10px 10px 10px 10px;
     margin:0 auto;
     margin-bottom: 20px;
-    float: left;
+    /* float: left; */
 }
 .string{
     background-color:#DCC2FF;
@@ -376,9 +378,11 @@
 }
 .box{
     /*border: solid 1px black;*/
-    display: inline-block;
+    /* display: inline-block; */
+    padding:1px 1px 1px 1px;
     width: 500px;
-    height: 320px;
+    /* float: left; */
+    /* height: 320px; */
 }
 .article{
     color: black;
@@ -387,6 +391,8 @@
     font-weight:700;
 }
 .comment_string{
+    font-weight: 900;
+    margin-top:20px;
     margin: 0;
     margin-left: 20px;
 }    
@@ -394,8 +400,9 @@
     border: solid 1px black;
     margin-right: 10px;
     margin-left: 20px;
-    padding:10px 10px 10px 10px;
-    background-color: #F5F5F5;
+    padding:10px 10px 80px 10px;
+    margin-bottom: 30px;
+    background-color: white;
     border: solid 4px #EEEEEE;
     border-radius: 10px;
     width:90%;
@@ -403,7 +410,7 @@
 .user_box{
     margin-left: 50px;
     border: solid 1px black;
-    float: left;
+    /* float: left; */
     padding: 10px 10px 10px 10px;
 }
 .message{
@@ -434,4 +441,5 @@
     margin-top: 30px;
     font-size: 20px; 
 }
+
 </style>
