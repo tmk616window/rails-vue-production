@@ -28,7 +28,7 @@
                 <button @click="deleteLikes()">いいねかいじょ</button>
             </div>
             <div v-else>
-                <button @click="createLike()">いいね</button>
+                <button @click="createLike()">aaaいいね</button>
             </div>                
                      <p class="article">
                          ・開発言語

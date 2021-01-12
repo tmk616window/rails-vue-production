@@ -11,11 +11,12 @@
         <p>name</p>
       </div>
         <div class="follow">
+          <input type="file">
             <p class="follow_string">フォロワー：{{}}</p>
             <p>フォロー：{{}}</p>
         </div>
         <div class="content">
-          <p>年齢：　　　　　{{}}</p>
+          <p>aaa年齢：　　　　　{{}}</p>
           <p>職業：　　　　　{{}}</p>
         </div>
     </v-card-text>
