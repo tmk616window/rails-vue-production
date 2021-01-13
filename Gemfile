@@ -62,3 +62,6 @@ gem 'capistrano-rbenv'
 gem 'capistrano3-unicorn'
 gem 'bcrypt'
 gem 'carrierwave'
+gem 'fog-aws'
+gem 'dotenv-rails'
+
