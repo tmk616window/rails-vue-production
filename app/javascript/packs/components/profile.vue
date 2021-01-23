@@ -10,42 +10,48 @@
     <v-card-title>
       <h3 >プロフィール </h3>
     </v-card-title>
-
+      <p class="img">
       <img 
       :src="user.icon.url" 
         class="icon"
       />
-
-
+      </p>
     <v-card-text>
+
       <div class="name">
-        <p>name</p>
-      </div>
-        <div class="follow">
-
-
-  <div class="contents">
-    <label v-show="!uploadedImage" class="input-item__label"
-      >画像を選択
-      <input type="file" @change="onFileChange" />
-    </label>
-    <div class="preview-item">
-      <div v-show="uploadedImage" class="preview-item-btn" @click="remove">
-        <p class="preview-item-name">{{ img_name }}</p>
-      </div>
-    </div>
-  </div>
-
-
-
-          <button @click="updateUser()">dswd2</button>
-          <input type="text" v-model="putIcon">
-            <p class="follow_string">フォロワー：{{}}</p>
-            <p>フォロー：{{}}</p>
+        <div v-if="userLogin.id === user.id">
+        <p><input type="file" @change="onFileChange" class="icon_file"/></p>
         </div>
-        <div class="content">
-          <p>aaa年齢：　　　　　{{}}</p>
-          <p>職業：　　　　　{{}}</p>
+        <p>{{user.name}}</p>
+      </div>
+        <div class="content container">
+          <div v-if="Age" class="agebox row justify-content-center" >
+            <p class="agestring">年齢：</p>
+            <p class="agestring">{{user.age}}</p>
+            <div v-if="userLogin.id === user.id">
+              <p>
+                  <v-btn
+                    color="primary"
+                    dark
+                    x-small
+                    @click="Age = !Age"
+                  >
+                  編集
+                  </v-btn>          
+              </p>
+          </div>
+
+          </div>
+          <div v-else class="agebox row justify-content-center">
+            
+            <p class="agestring">年齢：</p>
+            <p class="agestring"><input type="text" v-model="user.age" size="5"></p>
+
+          <p><button @click="putUserAge">更新</button></p>
+
+          </div>
+
+
         </div>
     </v-card-text>
   </v-card>
@@ -62,6 +68,9 @@
    export default {
      data() {
        return {
+         Age: true,
+         putAge: "",
+         putJob: "",
          icon:"",
          id: this.$route.params.userId,
          putIcon: '',
@@ -125,12 +134,21 @@
           // });
 
 
+
           reader.readAsDataURL(file);
         },
         remove() {
           this.uploadedImage = false;
         },
-
+        putUserAge(){
+          axios.put('/api/users/' + this.id ,{user: {age: this.user.age}}).then(response => {
+            this.user = response.data
+            console.log(response);
+            this.fetchUser();
+            this.putAge = ""
+            this.Age = !this.Age
+          });
+        }
      },
     computed:{
         userLogin(){
@@ -148,7 +166,7 @@
     height: 200px;
     width: 200px;
     border-radius: 50%;
-    margin:0 auto;
+    text-align: center;
 }
 .text{
     margin-left: 70px;
@@ -186,5 +204,20 @@
 
 .name p {
   text-align:center;
+}
+
+.img{
+  text-align: center;
+  margin:0 auto ;
+}
+
+.agebox {
+
+}
+
+.agestring{
+  display: inline-block;
+  text-align: right;
+
 }
 </style>

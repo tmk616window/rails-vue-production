@@ -1,84 +1,150 @@
 <template>
   <v-app>
       <br><br><br><br>
-      <br><br>
 
 
 <div class="show_box">
     <div class="card">
-    <div>
-    <div>
-        <div class="chart">
-              <Chart 
-              :infra_point="task.infra_point" 
-              :backend_point="task.backend_point" 
-              :user_point="task.user_point" 
-              :plan_point="task.plan_point" 
-              :unique_point="task.unique_point"
-              :front_point="task.plan_point"
-              />
-        </div>
+        <div>
+            <v-btn
+            depressed
+            color="error"
+            @click="deleteTask"
+            v-if="userLogin.id === task.user_id"
+            >
+            削除
+            </v-btn>
 
-        <div class="box">
-            <div class="user_name">
-                ユーザー：<router-link :to="{name: 'user_profile', params: {userId: task_user(task.user_id)}}" class="link">{{task_user_name(task.user_id)}}</router-link>
+                <v-btn
+                color="primary"
+                fab
+                small
+                dark
+                @click="show()"
+                class="chart_btn"
+                v-if="userLogin.id === task.user_id"
+                >
+                <v-icon>mdi-pencil</v-icon>
+                </v-btn>
+                
+            <div class="chart">
+                <Chart 
+                :infra_point="task.infra_point" 
+                :backend_point="task.backend_point" 
+                :user_point="task.user_point" 
+                :plan_point="task.plan_point" 
+                :unique_point="task.unique_point"
+                :front_point="task.front_point"
+                />
             </div>
 
-            <div v-if='userLike()'>
-                <button @click="deleteLikes()">いいねかいじょ</button>
-            </div>
-            <div v-else>
-                <button @click="createLike()">aaaいいね</button>
-            </div>                
-                     <p class="article">
-                         ・開発言語
-                            <v-btn dark fab color="red" class="add-button-icon" @click="addInput" height="23px" width="23px">＋</v-btn>
-                            <button type="button" @click="onSubmit" class="add-button-ptag">作成</button>
-                         </p>
-                     <div class="lang">
-                        <p v-for="ptag in ptags" class="string">
-                            {{ptag.tag}}
-                            <v-icon @click="deletePtag(ptag.id)">mdi-delete</v-icon>
-                        </p>
-                        <p v-for="(text,index) in texts" class="string">
-                            <input type="text" v-model="texts[index]" size=10>
-                            <v-btn dark fab color="red" class="add-button-icon" @click="removeInput(index)" height="23px" width="23px">－</v-btn>
-                        </p>
-                     </div>    
+            <div class="box">
+                <div class="user_name">
+                    ユーザー：<router-link :to="{name: 'user_profile', params: {userId: task_user(task.user_id)}}" class="link">{{task_user_name(task.user_id)}}</router-link>
+                </div>
+
+                <div v-if='userLike()'>
+                <v-btn
+                icon
+                color="pink"
+                @click="deleteLikes()"
+                >
+                <v-icon>mdi-heart</v-icon>
+                </v-btn>
+
+                </div>
+                <div v-else>
+                <v-btn
+                icon
+                color="indigo"
+                @click="createLike()"
+                >
+                <v-icon>mdi-heart</v-icon>
+                </v-btn>
+                </div>                
                         <p class="article">
-                            ・インフラ
-                            <v-btn dark fab color="red" class="add-button-icon" @click="addInputitag" height="23px" width="23px">＋</v-btn>
-                            <button type="button" @click="ionSubmit" class="add-button-ptag">作成</button>
-                        </p>
-                     <div class="lang">
-                        <p v-for="itag in itags" class="string">
-                            {{itag.tag}}
-                            <v-icon @click="deleteItag(itag.id)">mdi-delete</v-icon>
-                        </p>
-                        <p v-for="(itext,index) in itexts" class="string">
-                            <input type="text" v-model="itexts[index]" size=10>
-                            <v-btn dark fab color="red" class="add-button-icon" @click="iremoveInput(index)" height="23px" width="23px">－</v-btn>
-                        </p>
-                     </div>
+                            ・開発言語
+                                    <v-btn dark fab color="red" class="add-button-icon" @click="addInput" height="23px" width="23px" v-if="userLogin.id === task.user_id">＋</v-btn>
+                                    <button type="button" @click="onSubmit" class="add-button-ptag" v-if="userLogin.id === task.user_id">作成</button>
+                            </p>
+                        <div class="lang">
+                            <p v-for="ptag in ptags" class="string">
+                                {{ptag.tag}}
+                                <v-icon @click="deletePtag(ptag.id)" v-if="userLogin.id === task.user_id">mdi-delete</v-icon>
+                            </p>
+                            <p v-for="(text,index) in texts" class="string">
+                                <input type="text" v-model="texts[index]" size=10>
+                                <v-btn dark fab color="red" class="add-button-icon" @click="removeInput(index)" height="23px" width="23px">－</v-btn>
+                            </p>
+                        </div>    
+                            <p class="article">
+                                ・インフラ
+                                    <v-btn dark fab color="red" class="add-button-icon" @click="addInputitag" height="23px" width="23px" v-if="userLogin.id === task.user_id">＋</v-btn>
+                                    <button type="button" @click="ionSubmit" class="add-button-ptag" v-if="userLogin.id === task.user_id">作成</button>
+                            </p>
+                        <div class="lang">
+                            <p v-for="itag in itags" class="string">
+                                {{itag.tag}}
+                                <v-icon @click="deleteItag(itag.id)" v-if="userLogin.id === task.user_id">mdi-delete</v-icon>
+                            </p>
+                            <p v-for="(itext,index) in itexts" class="string">
+                                <input type="text" v-model="itexts[index]" size=10>
+                                <v-btn dark fab color="red" class="add-button-icon" @click="iremoveInput(index)" height="23px" width="23px">－</v-btn>
+                            </p>
+                        </div>
+            </div>
         </div>
-
-    </div>
         <div class="lang">
             <p class="article">・URL</p>
-            <a href="https://644b6d9b325a4fff87a89af4cf0fc21d.vfs.cloud9.ap-northeast-1.amazonaws.com/22">https://644b6d9b325a4fff87a89af4cf0fc21d.vfs.cloud9.ap-northeast-1.amazonaws.com/22</a>
+            <a v-bind:href="varURL" @click="clickURL">{{task.name}}</a>
         </div>
-        ・テキスト
-        <v-btn dark fab color="red" class="add-button-icon" @click="addInputTc" height="23px" width="23px">＋</v-btn>
-        <button type="button" @click="TConSubmit" class="add-button-ptag">作成</button>
-        <div v-for="tc in taskcomments">
-            <p class="comment_string">
-                {{tc.title}}
-                <v-icon @click="deleteTCs(tc.id)">mdi-delete</v-icon>        
-            </p>
+        <br>
+        <div v-if="taskcomment">
+            <v-btn dark fab color="red" class="add-button-icon" @click="addInputTc" height="23px" width="23px" v-if="userLogin.id === task.user_id">＋</v-btn>
+            <button type="button" @click="TConSubmit" class="add-button-ptag" v-if="userLogin.id === task.user_id">作成</button>
 
-            <div class="comment">{{tc.comment}}</div>
         </div>
+        <div v-else>
+        </div>
+        <br>
+        <div v-for="(tc, index) in taskcomments" :value="tc">
 
+                <div v-if="tc.present_form">
+                    <p class="comment_string">
+                        <v-text-field
+                            label="Title"
+                            v-model="tc.title"
+                        ></v-text-field>
+                    </p>
+                    <div class="comment">
+                        <v-textarea
+                        background-color="grey lighten-2"
+                        color="cyan"
+                        label="text"
+                        v-model="tc.comment"
+                        ></v-textarea>
+                        <button @click="updateTC(tc.id)">更新</button>
+                    </div>
+                </div>
+                <div v-else>
+                    <p class="comment_string">
+                        {{tc.title}}
+                        <v-icon @click="deleteTCs(tc.id)" v-if="userLogin.id === task.user_id">mdi-delete</v-icon>
+                    <v-btn
+                        color="primary"
+                        fab
+                        small
+                        dark
+                        @click='tc.present_form = !tc.present_form'
+                        v-if="userLogin.id === task.user_id"
+                        >
+                        <v-icon>mdi-pencil</v-icon>
+                    </v-btn>
+                    </p>
+                    <div class="comment">{{tc.comment}}</div>
+
+                </div>
+        </div>
         <div v-for="(tc, index) in TCs">
                 <p class="comment_string">
                     <v-text-field
@@ -99,11 +165,142 @@
         </div>
     </div>
 </div>
-<!-- <div class="user_box">
-    <div class="user_image">
-    </div>
-</div>               -->
-</div>
+
+
+
+
+<modal name="hello-world" width="90%" height="auto" :scrollable="true" :draggable="true" >
+        <v-container fluid>
+            <v-row align="center">
+            <v-col cols="5">
+                <v-subheader>
+                インフラ
+                </v-subheader>
+            </v-col>
+
+            <v-col cols="5">
+                <v-select
+                v-model="task.infra_point"
+                :items="items"
+                label="Select"
+                persistent-hint
+                return-object
+                single-line
+                ></v-select>
+            </v-col>
+            </v-row>
+        </v-container>
+
+        <v-container fluid>
+            <v-row align="center">
+            <v-col cols="5">
+                <v-subheader>
+                フロントエンド
+                </v-subheader>
+            </v-col>
+
+            <v-col cols="5">
+                <v-select
+                v-model="task.front_point"
+                :items="items"
+                label="Select"
+                persistent-hint
+                return-object
+                single-line
+                ></v-select>
+            </v-col>
+            </v-row>
+        </v-container>
+
+        <v-container fluid>
+            <v-row align="center">
+            <v-col cols="5">
+                <v-subheader>
+                バックエンド
+                </v-subheader>
+            </v-col>
+
+            <v-col cols="5">
+                <v-select
+                v-model="task.backend_point"
+                :items="items"
+                label="Select"
+                persistent-hint
+                return-object
+                single-line
+                ></v-select>
+            </v-col>
+            </v-row>
+        </v-container>
+
+        <v-container fluid>
+            <v-row align="center">
+            <v-col cols="5">
+                <v-subheader>
+                企画力
+                </v-subheader>
+            </v-col>
+
+            <v-col cols="5">
+                <v-select
+                v-model="task.plan_point"
+                :items="items"
+                label="Select"
+                persistent-hint
+                return-object
+                single-line
+                ></v-select>
+            </v-col>
+            </v-row>
+        </v-container>
+
+        <v-container fluid>
+            <v-row align="center">
+            <v-col cols="5">
+                <v-subheader>
+                ユーザビリティ
+                </v-subheader>
+            </v-col>
+
+            <v-col cols="5">
+                <v-select
+                v-model="task.user_point"
+                :items="items"
+                label="Select"
+                persistent-hint
+                return-object
+                single-line
+                ></v-select>
+            </v-col>
+            </v-row>
+        </v-container>
+
+        <v-container fluid>
+            <v-row align="center">
+            <v-col cols="5">
+                <v-subheader>
+                独自性
+                </v-subheader>
+            </v-col>
+
+            <v-col cols="5">
+                <v-select
+                v-model="task.unique_point"
+                :items="items"
+                label="Select"
+                persistent-hint
+                return-object
+                single-line
+                ></v-select>
+            </v-col>
+            </v-row>
+        </v-container>
+
+    <button @click="updateTask()">更新</button>
+</modal>
+
+
+
   </v-app>
 </template>
 <script>
@@ -115,6 +312,10 @@
       },
      data() {
        return {
+         tt: [],
+         TCindex: '',  
+         taskcomment: [],
+         items: [0,1,2,3,4,5],  
          like: [],  
          task: [],
          id: this.$route.params.taskId,
@@ -124,36 +325,42 @@
          ptags: [],
          itags: [],
          taskcomments: [],
-         TCs: [
-         ],
+         TCs: [],
          itexts: [],
          texts:[],
          putTask: '',
-         putPtag: ''
+         putPtag: '',
+         varURL: ''
        }
      },
     created(){
-        this.fetchTasks(this.id);
+        this.fetchTasks();
         this.fetchPtags(this.id);
         this.fetchItags(this.id);
         this.fetchTaskcomments(this.id);
         this.fetchLike(this.id);
         // this.fetchUsers();
         this.fetchUsers();
-        this.task_user();      
+        this.task_user();
     },
     mounted(){
         // this.fetchTasks(this.id);
         // this.fetchUsers();
     },
     methods: {
+        fetchTaskcomment(id){
+                axios.get('/api/taskcomments/show/' + id).then(response => {
+                    this.taskcomment = response.data
+                });
+
+        },
         fetchUsers() {
             axios.get('/api/users/').then(response => {
                     this.user = response.data.users
             });
         },
-        fetchTasks(id) {
-                axios.get('/api/tasks/' + id ).then(response => {
+        fetchTasks() {
+            axios.get('/api/tasks/' + this.id ).then(response => {
                 this.task = response.data
             });
         },
@@ -169,7 +376,7 @@
         },
         fetchTaskcomments(id){
                 axios.get('/api/taskcomments/' + id).then(response => {
-                this.taskcomments = response.data.taskcomments
+                    this.taskcomments = response.data.taskcomments
                 });
         },
         fetchLike(id){
@@ -185,13 +392,10 @@
                 console.log(l)
                 return l
         },
-         updateTask(id) {
-             axios.put('/api/tasks/' + id , {task: {name: this.putTask}}).then(response => {
-                this.putTask = '';
+         updateTask() {
+             axios.put('/api/tasks/' + this.id , {task: {infra_point: this.task.infra_point,backend_point: this.task.backend_point,user_point: this.task.user_point,plan_point: this.task.plan_point,unique_point: this.task.unique_point,front_point: this.task.front_point}}).then(response => {
                 this.$modal.hide('hello-world');
-                axios.get('/api/tasks/' + id ).then(response => {
-                this.task = response.data
-                });
+                window.location.reload();
              });
          },
          removeInput(index) {
@@ -287,6 +491,12 @@
                 this.fetchLike(this.id);     
              });
         },
+        deleteTask(){
+            if(confirm('削除してよろしいですか?'))
+             axios.delete('/api/tasks/' + this.id ).then(response => {
+                this.$router.push('/')
+             });
+        },
         task_user(id) {
             var uu = []
             var u =this.user.filter(u => u.id === id )[0]
@@ -301,11 +511,50 @@
             var u =this.user.filter(u => u.id === id )[0]['name']
             return u
         },
+        update_btn_TC(id){
+            this.fetchTaskcomment(id);
+            this.taskcomment.present_form = !this.taskcomment.present_form
+        },
+        updateTC(id){
+            var tt = []
+            var t =this.taskcomments.filter(t => t.id === id )[0]
+            for(var i in t) {
+                tt.push(t[i])
+            }
+            console.log(tt[2])
+            console.log(tt[3])
+             axios.put('/api/taskcomments/' + id, {taskcomment: {title: tt[2],comment: tt[3]}}).then(res => {
+                // this.fetchTaskcomments(this.id);
+             }) 
+            window.location.reload();
+            return tt[0]
+        },
+        task_TC(id){
+            var tt = []
+            var t =this.taskcomments.filter(t => t.id === id )[0]
+            for(var i in t) {
+                tt.push(t[i])
+            }
+            console.log(tt.comment)
+            return tt[0]
+            
+        },
         show() {
             this.$modal.show('hello-world');
         },
+        TCshow(id) {
+            this.$modal.show('TC' , id);
+            // alert(tc.id)
+
+        },
         hide() {
             this.$modal.hide('hello-world');
+        },
+        TChide(index) {
+            this.$modal.show('TC');
+        },
+        clickURL(){
+            this.varURL = this.task.name
         },
     },
     computed:{
@@ -400,8 +649,7 @@
     border: solid 1px black;
     margin-right: 10px;
     margin-left: 20px;
-    padding:10px 10px 80px 10px;
-    margin-bottom: 30px;
+    padding:10px 10px 10px 10px;
     background-color: white;
     border: solid 4px #EEEEEE;
     border-radius: 10px;
@@ -440,6 +688,11 @@
 .user_name{
     margin-top: 30px;
     font-size: 20px; 
+}
+
+.chart_btn{
+    top: 20px;
+    left: 75%;
 }
 
 </style>

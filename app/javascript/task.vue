@@ -1,11 +1,11 @@
 <template>
     <v-app>
-    <a href="/login">aaaa</a>
-    <label for="">新規作成</label>
+    <br>
+    <br>
     <div>
-  <v-btn v-on:click="show" class="button">投稿</v-btn>
+  <v-btn v-on:click="show" class="button" v-if="userLogin.name">投稿</v-btn>
     </div>
-<p>{{fetchLike()}}</p>
+    <p>{{fetchLike()}}</p>
     <div class="collection">
         <v-container>
         <v-row classr="dark" style="height: 450px;">
@@ -18,9 +18,9 @@
               :infra_point="task.infra_point" 
               :backend_point="task.backend_point" 
               :user_point="task.user_point" 
+              :plan_point="task.plan_point" 
               :unique_point="task.unique_point"
-              :plan_point="task.plan_point"
-              :front_point="task.plan_point"
+              :front_point="task.front_point"
               />
               </div>
              <div class="box2">
@@ -29,16 +29,12 @@
 
              <div>
                  <div class="like_box">
-                    <p class="like_image"></p>
+                    <v-icon color="red" class="like_image">mdi-heart</v-icon>   
                     <p class="like_number">{{task_like_count(task.id)}}</p>
-                 </div>
-                 <div class="message_box">
-                    <p class="message_image"></p>
-                    <p class="message_number">20</p>
                  </div>
              </div>
              <div class="user_box">
-                 <p class="user_image"></p>
+                 <p ><img :src="user_icon_task(task.user_id)" class="user_image"/></p>
                  <p class="username">{{user_task(task.user_id)}}</p>
              </div>
             </div>
@@ -184,12 +180,16 @@
             <v-row align="center">
             <v-col cols="5">
                 <v-subheader>
-                GitHub URL
+                作品 URL
                 </v-subheader>
             </v-col>
 
             <v-col cols="5">
-                git fkoprkmfoperkmfoprekmfore
+                <input type="text" >
+                <v-text-field
+                    label="URL"
+                    v-model="newURL"
+                ></v-text-field>
             </v-col>
             </v-row>
         </v-container>
@@ -269,8 +269,8 @@
      },
      data() {
        return {
-           like:[],
-        items: [0,1,2,3,4,5],
+         like:[],
+         items: [0,1,2,3,4,5],
          ptag: [],
          ptags: [],
          itags: [],
@@ -288,6 +288,7 @@
              id: '',
              name: ''
          },
+         newURL: '',
          newTask: '',
          new_backend_point: '',
          new_infra_point: '',
@@ -327,8 +328,8 @@
              })
          },
          createTask(){
-             axios.post('/api/tasks', {task: {name: this.newTask, user_id: this.userLogin.id,backend_point: this.new_backend_point,front_point: this.new_front_point,plan_point: this.new_plan_point,infra_point: this.new_infra_point,unique_point: this.new_unique_point,user_point: this.new_user_point}}).then(response => {
-                this.newTask = '';
+             axios.post('/api/tasks', {task: {name: this.newURL, user_id: this.userLogin.id,backend_point: this.new_backend_point,front_point: this.new_front_point,plan_point: this.new_plan_point,infra_point: this.new_infra_point,unique_point: this.new_unique_point,user_point: this.new_user_point}}).then(response => {
+                this.newURL = '';
                 this.fetchTasks();
                 this.hide()
                 this.tshow();
@@ -364,6 +365,14 @@
                 uu.push(u[i])
             }
             return uu[1]
+        },
+        user_icon_task(id) {
+            var uu = []
+            var u =this.user.filter(u => u.id === id )[0]
+            for(var i in u) {
+                uu.push(u[i])
+            }
+            return uu[4].url
         },
         task_show(id) {
             var uu = []
@@ -532,7 +541,6 @@
     margin-left: 10px;
     width: 22px;
     height: 22px;
-    border: solid 1px black;
     float: left;
     margin-right: 8px;
 }

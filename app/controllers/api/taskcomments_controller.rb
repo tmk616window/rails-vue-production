@@ -7,6 +7,10 @@ class Api::TaskcommentsController < ApplicationController
     @taskcomment = Taskcomment.where(task_id: params[:id])
   end
 
+  def show2
+    @taskcomment = Taskcomment.find(params[:id])
+  end
+
   def create
     @taskcomment = Taskcomment.new(taskcomment_params)
     if @taskcomment.save
@@ -16,8 +20,10 @@ class Api::TaskcommentsController < ApplicationController
     end
   end
 
+
   def update
     @taskcomment = Taskcomment.find(params[:id])
+
     if @taskcomment.update(taskcomment_params)
       render :show, status: :ok
     else
@@ -35,6 +41,6 @@ class Api::TaskcommentsController < ApplicationController
   end
 
   def taskcomment_params
-     params.require(:taskcomment).permit(:title,:comment, :task_id)
+     params.require(:taskcomment).permit(:title,:comment, :task_id,:present_form)
   end
 end

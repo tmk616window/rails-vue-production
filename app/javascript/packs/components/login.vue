@@ -6,7 +6,7 @@
     <v-card-text>
       <v-form>
         <v-text-field prepend-icon="mdi-account-circle" v-model="loginEmail" hint="入力中。最大10文字" label="メールアドレス" />
-        <v-text-field prepend-icon="mdi-lock" append-icon="mdi-eye-off" v-model="loginPassword"   label="password" />
+        <v-text-field prepend-icon="mdi-lock" append-icon="mdi-eye-off" v-model="loginPassword" label="password" type="password"/>
         <v-btn
           rounded
           color="primary"
@@ -39,13 +39,18 @@
                 Logined(){
                      axios.post('/api/sessions', {session: {email: this.loginEmail, password: this.loginPassword}})
                     .then(res => {
+                        this.$store.dispatch('isLoggedIn')
+                        axios.get('/api/sessions')
+                        .then(res => {
                         this.loginEmail = '',
                         this.loginPassword = '',
-                        this.$store.dispatch('isLoggedIn')
                         this.$router.push('/')
-                })
+                        })
+                        .catch(function (error) {
+                          alert('メールアドレスかパスワードが間違っています')
+                        });
+                    })
             }
-            
          },
   }
 </script>

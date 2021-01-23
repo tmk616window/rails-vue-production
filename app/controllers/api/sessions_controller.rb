@@ -14,11 +14,17 @@ class Api::SessionsController < ApplicationController
   end
   
   def destroy
-    
+    session[:user_id] = nil
   end
   
   def show
       @current_user ||= User.find_by(id: session[:user_id]) if session[:user_id]
   end
+
+  def taskcomment_params
+    params.require(:taskcomment).permit(:title,:comment, :task_id,:present_form)
+ end
+
+
 end
 

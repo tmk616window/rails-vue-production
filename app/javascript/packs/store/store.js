@@ -43,19 +43,16 @@ export default new Vuex.Store({
         })
     },   
     async logout({commit}, state, id, signin) {
-        await axios.delete('/api/sessions/' + this.state.user.id)
+        await axios.delete('/api/sessions/' + this.getters.login.id)
             .then(response => {
-            if ( typeof id === 'undefined') {
               commit('deleteUser')
-            } else{
-              commit('deleteUser')
-            }
+              axios.delete('/api/sessions/')
                 //ログインページに戻す
             })
-            .catch(function (error) {
-              commit('deleteUser')
-              // state.signin = !state.signin
-            });
+            // .catch(function (error) {
+            //   commit('deleteUser')
+            //   // state.signin = !state.signin
+            // });
         },  
   },
 
